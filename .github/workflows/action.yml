@@ -25,16 +25,17 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Tectonic
-        run: tectonic resume.tex
+        run: tectonic main.tex
 
       - name: Upload PDF
         uses: actions/upload-artifact@v3
         with:
-          name: resume
-          path: resume.pdf
+          name: main
+          path: main.pdf
 
       - name: Commit and Push PDF
         run: |
+          mv main.pdf resume.pdf
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add resume.pdf
