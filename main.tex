@@ -1,0 +1,250 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+% \usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{tgpagella}
+
+% Choose a font
+
+% \usepackage[familydefault,regular]{Chivo}
+% \usepackage[T1]{fontenc}
+
+% \usepackage[T1]{fontenc}
+% \usepackage{accanthis}
+
+\usepackage[T1]{fontenc}
+\usepackage[light]{antpolt}
+
+% \usepackage{fontspec}
+% \setmainfont{QTEurotype}
+
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% TAB FORMATTING
+\setlength{\parindent}{0.2em}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1:}{ #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeItemNoTitle}[1]{
+    \item\small{
+        {#1 \vspace{-2pt}}
+    }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeDoubleSubheading}[6]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small#4} \\
+      \textit{\small#5} & \textit{\small#6} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small#2} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\newcommand{\resumeSubItemNoBullet}[1]{%
+    \hspace*{\dimexpr-\labelsep -\labelwidth}%
+    \item[]\small{#1 \vspace{-2pt}}%
+}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[leftmargin=*]\setlength\itemsep{1mm}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+%----------HEADING-----------------
+\begin{tabular*}{\textwidth}
+    {
+    l@{\extracolsep{\fill}}l
+    @{\extracolsep{6pt}}r
+    l@{\extracolsep{\fill}}l
+    @{\extracolsep{6pt}}r
+    @{\extracolsep{6pt}}r
+    @{\extracolsep{6pt}}r
+    }
+
+\textbf{\LARGE Felipe Scrochio Custódio}
+& Email: & \href{mailto:felipe.crochi@gmail.com}{felipe.crochi@gmail.com} \\
+{\large Software Engineer}
+& Github: & \href{https://github.com/felipecustodio}{github.com/felipecustodio} \\
+& LinkedIn: & \href{https://www.linkedin.com/in/fscustodio}{linkedin.com/in/fscustodio} \\
+
+\end{tabular*}
+
+%-----------EXPERIENCE-----------------
+\section{Experience}
+
+\resumeSubHeadingListStart
+  \resumeSubheading
+      {Zyte \href{https://zyte.com}{(zyte.com)}}{Remote, Ireland}
+      {Full time - Mid. Software Engineer}{Jul. 2022 - Present}
+      \resumeItemListStart
+        \resumeItemNoTitle
+            {
+            Developed and maintained numerous Scrapy spiders across different Python codebases, ensuring efficient delivery of results within demanding schedules. Tasked with handling various responsibilities, including building projects from scratch and maintenance tasks such as addressing bugs and refactoring older code.
+            }
+        \resumeItemNoTitle
+            {
+            Engaged in direct communication with clients to grasp project specifications and offer personalized solutions, adapting to versatile and evolving situations to meet changing project requirements.
+            }
+        \resumeItemNoTitle
+            {
+            Actively participated in a fully remote work environment, collaborating with a multicultural team across different time zones.
+            }
+      \resumeItemListEnd
+  \resumeSubheading
+      {Birdie \href{https://birdie.ai}{(birdie.ai)}}{Remote, Brazil}
+      % {Full time - Jr. Software Engineer}{Jan. 2022 - Jul. 2022}
+      % {Internship}{Jul. 2021 - Jan. 2022}
+      {Full time - Jr. Software Engineer}{Jul. 2021 - Jul. 2022}
+      \resumeItemListStart
+        \resumeItemNoTitle
+          {
+          Utilized Scrapy and Python to develop and manage data scraping spiders across diverse sources such as app stores, e-commerce sites, forums, and blogs.
+          }
+        \resumeItemNoTitle
+          {
+           Contributed to the design and implementation of an in-house distributed crawling architecture, resulting in a significant performance boost, enabling the scraping of millions of pages per week. Implemented real-time monitoring dashboards for enhanced visibility.
+          }
+        \resumeItemNoTitle
+          {
+          Worked in a fast-paced B2B startup environment, communicating directly with stakeholders to discuss project requirements and deliver data on time.
+          }
+      \resumeItemListEnd
+    \resumeSubheading
+      {Raccoon Marketing Digital \href{https://birdie.ai}{(raccoon.ag)}}{São Carlos, São Paulo, Brazil}
+      {Internship - Business Intelligence team}{Apr 2019 - Aug 2020}
+      \resumeItemListStart
+        \resumeItemNoTitle
+        {
+        Developed data extractor for various sources, including APIs, databases, and web pages, to build datasets for both business clients and internal stakeholders in Analytics pipelines.
+        }
+        \resumeItemNoTitle
+          {
+          Designed dashboards, automated spreadsheets, and reports, merging data from different sources such as Google Sheets, and querying data from Google BigQuery to provide real-time marketing insights to client companies.
+          }
+          \resumeItemNoTitle
+          {
+          Developed data governance tools using data lineage and network visualizations for all data pipelines to reduce maintenance efforts, highlight bottlenecks, and lower storage costs.
+          }
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+  
+%-----------EDUCATION-----------------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {ICMC USP - University of São Paulo}{São Carlos, São Paulo, Brazil}
+      {Master of Business Administration (MBA) }{Jul. 2024 -- Oct. 2025}
+
+      \resumeItemListStart
+        \resumeSubItemNoBullet
+          {MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.}
+      \resumeItemListEnd
+
+    \resumeSubheading
+      {ICMC USP - University of São Paulo}{São Carlos, São Paulo, Brazil}
+      {Bachelor of Science in Computer Science (BSc)}{Mar. 2015 -- Dec. 2021}
+
+      \resumeItemListStart
+        \resumeSubItemNoBullet
+          {Received a Bachelor's Degree from the Instituto de Ciências Matemáticas e de Computação, at the University of São Paulo (ICMC - USP), one of the most important Brazilian institutions in the fields of STEM.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+ 
+%-----------PROJECTS-----------------
+% \section{Extracurricular Activities}
+%   \resumeSubHeadingListStart
+%     \resumeSubheading
+%     {PvP - Piratas do Vale do Pinhal}{São Carlos, SP, Brazil}
+%       {https://github.com/pirataspinhal}{Fev 2016 - Present}
+    
+%     \resumeItemListStart
+%       \resumeItemNoTitle
+%         {
+%         An interdisciplinary studies group on computer science, focusing on doing in-depth exploration of topics beyond those already covered by the university courses, aiming for a more complete and cooperative learning experience.
+%         }
+%     \resumeItemListEnd
+%   \resumeSubHeadingListEnd
+
+%-------- SKILLS------------
+\section{Skills \& Competencies}
+ \resumeItemListStart
+    \resumeItem{Languages}{}\vspace{-3pt}{
+        \resumeItemListStart
+            \resumeItem{Portuguese}{Native}
+            \resumeItem{English}{Full Professional Proficiency}
+        \resumeItemListEnd
+    }
+    \resumeItem{Skills and Tools}{}\vspace{-3pt}{
+        \resumeItemListStart
+            \resumeItemNoTitle
+            {Python | SQL | Git | Linux | Google Cloud Platform (BigQuery, Cloud Functions, Storage, App Engine) | AWS (Firehose, Athena, S3) | Microsoft Azure (AKS, VMs, Functions) | Web scraping (Scrapy, Puppeteer, Selenium) | DevOps, Infrastructure (Docker, Kubernetes, Terraform) | CI/CD (ArgoCD, Gitlab) | Messaging and Caching (Redis) | Web Frameworks (FastAPI, Flask) | Monitoring (Grafana, InfluxDB, Loki) | Testing (Pytest, Unit Tests)}
+        \resumeItemListEnd
+    }
+ \resumeItemListEnd
+
+%-------------------------------------------
+\end{document}
