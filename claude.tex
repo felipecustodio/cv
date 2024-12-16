@@ -1,0 +1,66 @@
+% !TEX TS-program = xelatex
+% !TEX encoding = UTF-8 Unicode
+
+\documentclass[11pt,a4paper,sans]{moderncv}
+\moderncvstyle{classic}
+\moderncvcolor{blue}
+
+% Character encoding
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+
+% Set the main font to Linux Libertine
+\setmainfont{Linux Libertine O}
+
+% Adjust the page margins
+\usepackage[scale=0.75]{geometry}
+
+% Reduce vertical space
+\usepackage{setspace}
+\setlength{\parskip}{0pt}
+
+% Personal data
+\name{Felipe}{Scrochio Custódio}
+\title{Software Engineer}
+\address{}{}{}
+\phone[mobile]{+XX XXX XXX XXXX}
+\email{felipe.crochi@gmail.com}
+\social[linkedin]{fscustodio}
+\social[github]{felipecustodio}
+
+\begin{document}
+
+\makecvtitle
+
+\section{Experience}
+\cventry{Jul 2022--Present}{Software Engineer (Mid-level)}{Zyte}{Remote, Ireland}{}{
+\begin{itemize}
+\item Developed 200+ Scrapy spiders across 10+ Python projects, improving data extraction by 30\% with 99.9\% uptime.
+\item Led 5 new projects and refactored 3 legacy systems, enhancing scalability by 40\% and reducing technical debt by 25\%.
+\item Collaborated with 15+ clients, achieving 100\% on-time delivery rate and 95\% project success rate in a multicultural team.
+\end{itemize}}
+
+\cventry{Jul 2021--Jul 2022}{Software Engineer (Junior)}{Birdie}{Remote, Brazil}{}{
+\begin{itemize}
+\item Built 50+ Scrapy spiders, extracting data from 20+ sources and scaling to 5+ million pages weekly (200\% performance boost).
+\item Created 10 real-time dashboards, reducing issue response time by 40\% and meeting 95\% of tight deadlines.
+\end{itemize}}
+
+\cventry{Apr 2019--Aug 2020}{Software Engineer (Intern)}{Raccoon Marketing Digital}{São Carlos, Brazil}{}{
+\begin{itemize}
+\item Developed 15+ data extraction tools and 20+ automated dashboards for 30+ clients across 5 departments.
+\item Built 3 data governance tools, reducing maintenance costs by 30\% and improving data quality by 25\%.
+\end{itemize}}
+
+\section{Education}
+\cventry{Jul 2024--Oct 2025}{MBA in Advanced AI and Big Data}{ICMC USP - University of São Paulo}{São Carlos, Brazil}{}{}
+\cventry{Mar 2015--Dec 2021}{BSc in Computer Science}{ICMC USP - University of São Paulo}{São Carlos, Brazil}{}{}
+
+\section{Skills \& Competencies}
+\cvitem{Languages}{Portuguese (Native), English (Full Professional Proficiency)}
+\cvitem{Programming}{Python, SQL, Git, Linux}
+\cvitem{Cloud \& DevOps}{GCP, AWS, Azure, Docker, Kubernetes, Terraform, ArgoCD, Gitlab}
+\cvitem{Web \& Data}{Scrapy, Puppeteer, Selenium, FastAPI, Flask, Redis, Grafana, InfluxDB, Loki}
+\cvitem{Testing}{Pytest, Unit Tests}
+
+\end{document}
