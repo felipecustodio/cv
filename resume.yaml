@@ -1,0 +1,88 @@
+basics:
+  name: Felipe Scrochio Custódio
+  label: Software Engineer
+  email: felipe.crochi@gmail.com
+  url: https://github.com/felipecustodio
+  profiles:
+    - network: GitHub
+      username: felipecustodio
+      url: https://github.com/felipecustodio
+    - network: LinkedIn
+      username: fscustodio
+      url: https://www.linkedin.com/in/fscustodio
+
+work:
+  - name: Zyte
+    url: https://zyte.com
+    location: Remote, Ireland
+    position: Software Engineer (Mid-level, Full-time)
+    startDate: 2022-07-01
+    endDate: 2024-12-01
+    summary: Developed and optimized hundreds of Scrapy spiders across multiple Python projects, improving data extraction performance and reliability.
+    highlights:
+      - Led the development of new projects and executed code refactoring, enhancing scalability and reducing technical debt.
+      - Collaborated with clients to deliver customized data scraping solutions, adhering to project timelines and requirements.
+      - Worked in a remote, multicultural team, using Slack, Jira, and Meet to maintain seamless communication across time zones.
+  - name: Birdie
+    url: https://birdie.ai
+    location: Remote, Brazil
+    position: Software Engineer (Junior, Full-time)
+    startDate: 2021-07-01
+    endDate: 2022-07-01
+    summary: Built and maintained data scraping spiders using Scrapy and Python, extracting information from diverse sources, such as e-commerce platforms and forums.
+    highlights:
+      - Implemented distributed crawling architecture, enabling the scraping of millions of pages weekly, boosting performance.
+      - Created real-time dashboards for monitoring scraping activities and data pipeline efficiency.
+      - Collaborated with stakeholders to define requirements and deliver data-driven solutions within tight deadlines.
+  - name: Raccoon Marketing Digital
+    url: https://raccoon.ag
+    location: On-site, São Carlos, Brazil
+    position: Software Engineer (Internship)
+    startDate: 2019-04-01
+    endDate: 2020-08-01
+    summary: Developed data extraction tools for APIs, databases, and web sources, supporting business intelligence and analytics pipelines.
+    highlights:
+      - Designed and automated dashboards, spreadsheets, and reports, integrating data from Google BigQuery and Google Sheets for real-time marketing insights.
+      - Built data governance tools, reducing maintenance costs and improving data quality across pipelines.
+
+education:
+  - institution: ICMC USP - University of São Paulo
+    location: São Carlos, São Paulo, Brazil
+    area: Business Administration
+    studyType: Master
+    startDate: 2024-07-01
+    endDate: 2025-10-01
+    gpa:
+    courses:
+      - MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.
+  - institution: ICMC USP - University of São Paulo
+    location: São Carlos, São Paulo, Brazil
+    area: Computer Science
+    studyType: Bachelor
+    startDate: 2015-03-01
+    endDate: 2021-12-01
+    gpa:
+    courses:
+      - Received a Bachelor's Degree from the Instituto de Ciências Matemáticas e de Computação, at the University of São Paulo (ICMC - USP), one of the most important Brazilian institutions in the fields of STEM.
+
+skills:
+  - name: Languages
+    keywords:
+      - Portuguese (Native)
+      - English (Full Professional Proficiency)
+  - name: Skills and Tools
+    keywords:
+      - Python
+      - SQL
+      - Git
+      - Linux
+      - Google Cloud Platform (BigQuery, Cloud Functions, Storage, App Engine)
+      - AWS (Firehose, Athena, S3)
+      - Microsoft Azure (AKS, VMs, Functions)
+      - Web scraping (Scrapy, Puppeteer, Selenium)
+      - DevOps, Infrastructure (Docker, Kubernetes, Terraform)
+      - CI/CD (ArgoCD, Gitlab)
+      - Messaging and Caching (Redis)
+      - Web Frameworks (FastAPI, Flask)
+      - Monitoring (Grafana, InfluxDB, Loki)
+      - Testing (Pytest, Unit Tests)
