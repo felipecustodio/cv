@@ -1,0 +1,40 @@
+name: 'Update Resume from YAML'
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'resume.yaml'
+
+jobs:
+  test-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml jinja2
+
+      - name: Run Tests
+        run: |
+          python -m unittest discover tests/
+
+      - name: Update HTML and TEX files
+        # Only run if tests pass (tests failing would stop the workflow)
+        run: python .github/scripts/update_resume.py
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add main.tex index.html
+          git commit -m "Update resume from YAML" || echo "No changes to commit"
+          git push

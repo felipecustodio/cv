@@ -7,17 +7,107 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.cdnfonts.com/css/geist');
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         :root {
-            font-family: 'Geist', 'Inter', sans-serif;
+            font-family: 'Inter', 'Helvetica Neue', 'SF Pro', sans-serif;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.025);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        body {
+            background-color: #0E0E10;
+            color: #ECECEC;
         }
+        /* Design System Classes */
+        .lin-glass {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+        }
+        .lin-bg-dark {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+        .lin-bg-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px) brightness(30%);
+            -webkit-backdrop-filter: blur(20px) brightness(30%);
+            z-index: -1;
+        }
+        .lin-text-secondary {
+            color: #AAAAAA;
+        }
+        .lin-dual-border {
+            position: relative;
+        }
+        .lin-dual-border::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 18px;
+            padding: 1px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.08), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .lin-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+            color: #ECECEC;
+            overflow: hidden;
+        }
+        .lin-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 12px rgba(80, 150, 255, 0.25);
+            transform: scale(1.02);
+        }
+        .lin-text-shimmer {
+            position: relative;
+            display: inline-block;
+        }
+        .lin-text-shimmer:hover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .lin-text-shimmer:hover::after {
+                animation: none;
+            }
+            .lin-btn:hover {
+                transform: none;
+            }
+        }
+        @media (prefers-reduced-transparency: reduce) {
+            .lin-glass {
+                background: #121215;
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+            .lin-bg-image::after {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+                background-color: rgba(0, 0, 0, 0.9);
+            }
+        }
+
+        /* Original animations */
         .button-glow {
             position: relative;
             transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -52,72 +142,72 @@
     </style>
 </head>
 <body class="min-h-screen">
-    <div class="background-image fixed inset-0 z-0"></div>
+    <div class="lin-bg-dark background-image lin-bg-image"></div>
     <div class="relative z-20 min-h-screen flex items-center justify-center p-4">
         <div class="absolute top-4 left-4">
-            <a href="https://felipecustodio.dev" class="button-glow px-4 py-2 rounded-lg bg-gradient-to-r from-white/5 to-white/0 border border-white/5 hover:border-white/10 text-white/80 hover:text-white flex items-center gap-2 relative overflow-hidden">
+            <a href="https://felipecustodio.dev" class="lin-btn lin-dual-border px-4 py-2 flex items-center gap-2">
                 <i data-lucide="home" class="w-4 h-4"></i>
-                Home
+                <span class="lin-text-shimmer">Home</span>
             </a>
         </div>
-        <div class="glass-card rounded-2xl p-8 max-w-4xl w-full fade-in">
+        <div class="lin-glass lin-dual-border p-8 max-w-4xl w-full fade-in">
             <div class="flex flex-col gap-8 items-start">
                 <a href="https://cv.felipecustodio.dev/resume.pdf" download="Felipe_Scrochio_Custodio_CV.pdf"
-                   class="button-glow px-4 py-2 rounded-lg bg-gradient-to-r from-white/5 to-white/0 border border-white/5 hover:border-white/10 text-white/80 hover:text-white flex items-center gap-2 relative overflow-hidden">
+                   class="lin-btn lin-dual-border px-4 py-2 flex items-center gap-2">
                     <i data-lucide="download" class="w-4 h-4"></i>
-                    Download PDF
+                    <span class="lin-text-shimmer">Download PDF</span>
                 </a>
                 <div class="space-y-6">
-                    <h1 class="text-4xl font-semibold text-white">Felipe Scrochio Custódio</h1>
-                    <p class="text-xl text-white/80">Software Engineer</p>
+                    <h1 class="text-4xl font-bold text-white">Felipe Scrochio Custódio</h1>
+                    <p class="text-xl lin-text-secondary">Software Engineer</p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="mailto:felipe.crochi@gmail.com" class="text-white/80 hover:text-white flex items-center gap-2">
+                        <a href="mailto:felipe.crochi@gmail.com" class="lin-text-secondary hover:text-white flex items-center gap-2 transition-colors duration-300">
                             <i data-lucide="mail" class="w-4 h-4"></i>
-                            felipe.crochi@gmail.com
+                            <span class="lin-text-shimmer">felipe.crochi@gmail.com</span>
                         </a>
-                        <a href="https://github.com/felipecustodio" target="_blank" class="text-white/80 hover:text-white flex items-center gap-2">
+                        <a href="https://github.com/felipecustodio" target="_blank" class="lin-text-secondary hover:text-white flex items-center gap-2 transition-colors duration-300">
                             <i data-lucide="github" class="w-4 h-4"></i>
-                            github.com/felipecustodio
+                            <span class="lin-text-shimmer">github.com/felipecustodio</span>
                         </a>
-                        <a href="https://www.linkedin.com/in/fscustodio" target="_blank" class="text-white/80 hover:text-white flex items-center gap-2">
+                        <a href="https://www.linkedin.com/in/fscustodio" target="_blank" class="lin-text-secondary hover:text-white flex items-center gap-2 transition-colors duration-300">
                             <i data-lucide="linkedin" class="w-4 h-4"></i>
-                            linkedin.com/in/fscustodio
+                            <span class="lin-text-shimmer">linkedin.com/in/fscustodio</span>
                         </a>
                     </div>
                 </div>
-                <section class="mt-10">
-                    <h2 class="text-2xl font-semibold text-white flex items-center gap-2">
+                <section class="mt-10 w-full">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2 mb-4">
                         <i data-lucide="briefcase" class="w-6 h-6"></i>
                         Experience
                     </h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="text-xl font-semibold text-white">Zyte</h3>
-                            <p class="text-white/80">Software Engineer (Mid-level, Full-time)</p>
-                            <p class="text-white/60">Remote, Ireland | Jul. 2022 - Dec. 2024</p>
-                            <ul class="list-disc list-inside text-white/80">
+                    <div class="space-y-6">
+                        <div class="lin-glass lin-dual-border p-6">
+                            <h3 class="text-xl font-bold text-white">Zyte</h3>
+                            <p class="text-white">Software Engineer (Mid-level, Full-time)</p>
+                            <p class="lin-text-secondary mb-2">Remote, Ireland | Jul. 2022 - Dec. 2024</p>
+                            <ul class="list-disc list-inside text-white space-y-1">
                                 <li>Developed and optimized hundreds of Scrapy spiders across multiple Python projects, improving data extraction performance and reliability.</li>
                                 <li>Led the development of new projects and executed code refactoring, enhancing scalability and reducing technical debt.</li>
                                 <li>Collaborated with clients to deliver customized data scraping solutions, adhering to project timelines and requirements.</li>
                                 <li>Worked in a remote, multicultural team, using Slack, Jira, and Meet to maintain seamless communication across time zones.</li>
                             </ul>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-semibold text-white">Birdie</h3>
-                            <p class="text-white/80">Software Engineer (Junior, Full-time)</p>
-                            <p class="text-white/60">Remote, Brazil | Jul. 2021 - Jul. 2022</p>
-                            <ul class="list-disc list-inside text-white/80">
+                        <div class="lin-glass lin-dual-border p-6">
+                            <h3 class="text-xl font-bold text-white">Birdie</h3>
+                            <p class="text-white">Software Engineer (Junior, Full-time)</p>
+                            <p class="lin-text-secondary mb-2">Remote, Brazil | Jul. 2021 - Jul. 2022</p>
+                            <ul class="list-disc list-inside text-white space-y-1">
                                 <li>Built and maintained data scraping spiders using Scrapy and Python, extracting information from diverse sources, such as e-commerce platforms and forums.</li>
                                 <li>Implemented distributed crawling architecture, enabling the scraping of millions of pages weekly, boosting performance.</li>
                                 <li>Created real-time dashboards for monitoring scraping activities and data pipeline efficiency.</li>
                                 <li>Collaborated with stakeholders to define requirements and deliver data-driven solutions within tight deadlines.</li>
                             </ul>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-semibold text-white">Raccoon Marketing Digital</h3>
-                            <p class="text-white/80">Software Engineer (Internship)</p>
-                            <p class="text-white/60">On-site, São Carlos, Brazil | Apr. 2019 - Aug. 2020</p>
-                            <ul class="list-disc list-inside text-white/80">
+                        <div class="lin-glass lin-dual-border p-6">
+                            <h3 class="text-xl font-bold text-white">Raccoon Marketing Digital</h3>
+                            <p class="text-white">Software Engineer (Internship)</p>
+                            <p class="lin-text-secondary mb-2">On-site, São Carlos, Brazil | Apr. 2019 - Aug. 2020</p>
+                            <ul class="list-disc list-inside text-white space-y-1">
                                 <li>Developed data extraction tools for APIs, databases, and web sources, supporting business intelligence and analytics pipelines.</li>
                                 <li>Designed and automated dashboards, spreadsheets, and reports, integrating data from Google BigQuery and Google Sheets for real-time marketing insights.</li>
                                 <li>Built data governance tools, reducing maintenance costs and improving data quality across pipelines.</li>
@@ -125,36 +215,38 @@
                         </div>
                     </div>
                 </section>
-                <section class="mt-10">
-                    <h2 class="text-2xl font-semibold text-white flex items-center gap-2">
+                <section class="mt-10 w-full">
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2 mb-4">
                         <i data-lucide="graduation-cap" class="w-6 h-6"></i>
                         Education
                     </h2>
-                    <div class="space-y-4">
-                        <div>
-                            <h3 class="text-xl font-semibold text-white">ICMC USP - University of São Paulo</h3>
-                            <p class="text-white/80">Master of Business Administration (MBA)</p>
-                            <p class="text-white/60">São Carlos, São Paulo, Brazil | Jul. 2024 - Oct. 2025</p>
-                            <ul class="list-disc list-inside text-white/80">
+                    <div class="space-y-6">
+                        <div class="lin-glass lin-dual-border p-6">
+                            <h3 class="text-xl font-bold text-white">ICMC USP - University of São Paulo</h3>
+                            <p class="text-white">Master of Business Administration (MBA)</p>
+                            <p class="lin-text-secondary mb-2">São Carlos, São Paulo, Brazil | Jul. 2024 - Oct. 2025</p>
+                            <ul class="list-disc list-inside text-white space-y-1">
                                 <li>MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.</li>
                             </ul>
                         </div>
-                        <div>
-                            <h3 class="text-xl font-semibold text-white">ICMC USP - University of São Paulo</h3>
-                            <p class="text-white/80">Bachelor of Science in Computer Science (BSc)</p>
-                            <p class="text-white/60">São Carlos, São Paulo, Brazil | Mar. 2015 - Dec. 2021</p>
-                            <ul class="list-disc list-inside text-white/80">
+                        <div class="lin-glass lin-dual-border p-6">
+                            <h3 class="text-xl font-bold text-white">ICMC USP - University of São Paulo</h3>
+                            <p class="text-white">Bachelor of Science in Computer Science (BSc)</p>
+                            <p class="lin-text-secondary mb-2">São Carlos, São Paulo, Brazil | Mar. 2015 - Dec. 2021</p>
+                            <ul class="list-disc list-inside text-white space-y-1">
                                 <li>Received a Bachelor's Degree from the Instituto de Ciências Matemáticas e de Computação, at the University of São Paulo (ICMC - USP), one of the most important Brazilian institutions in the fields of STEM.</li>
                             </ul>
                         </div>
                     </div>
                 </section>
-                <section>
-                    <h2 class="text-2xl font-semibold text-white">Skills & Competencies</h2>
-                    <ul class="list-disc list-inside text-white/80">
-                        <li>Languages: Portuguese (Native), English (Full Professional Proficiency)</li>
-                        <li>Skills and Tools: Python, SQL, Git, Linux, Google Cloud Platform (BigQuery, Cloud Functions, Storage, App Engine), AWS (Firehose, Athena, S3), Microsoft Azure (AKS, VMs, Functions), Web scraping (Scrapy, Puppeteer, Selenium), DevOps, Infrastructure (Docker, Kubernetes, Terraform), CI/CD (ArgoCD, Gitlab), Messaging and Caching (Redis), Web Frameworks (FastAPI, Flask), Monitoring (Grafana, InfluxDB, Loki), Testing (Pytest, Unit Tests)</li>
-                    </ul>
+                <section class="mt-10 w-full">
+                    <h2 class="text-2xl font-bold text-white mb-4">Skills & Competencies</h2>
+                    <div class="lin-glass lin-dual-border p-6">
+<ul class="list-disc list-inside text-white space-y-2">
+<li>Languages: Portuguese (Native), English (Full Professional Proficiency)</li>
+<li>Skills and Tools: Python, SQL, Git, Linux, Google Cloud Platform (BigQuery, Cloud Functions, Storage, App Engine), AWS (Firehose, Athena, S3), Microsoft Azure (AKS, VMs, Functions), Web scraping (Scrapy, Puppeteer, Selenium), DevOps, Infrastructure (Docker, Kubernetes, Terraform), CI/CD (ArgoCD, Gitlab), Messaging and Caching (Redis), Web Frameworks (FastAPI, Flask), Monitoring (Grafana, InfluxDB, Loki), Testing (Pytest, Unit Tests)</li>
+</ul>
+</div>
                 </section>
             </div>
         </div>
