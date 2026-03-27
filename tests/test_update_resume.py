@@ -12,10 +12,12 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../.git
 
 # Import directly from the script
 from update_resume import (
+    build_degree_text,
+    escape_latex,
     format_date,
     load_yaml_data,
     update_html_file,
-    update_latex_file
+    update_latex_file,
 )
 
 class TestResumeUpdate(unittest.TestCase):
@@ -211,6 +213,8 @@ class TestResumeUpdate(unittest.TestCase):
         self.assertIn('Test course description', content)
         self.assertIn('English (Native)', content)
         self.assertIn('Python', content)
+        self.assertEqual(content.count("Test Company"), 1)
+        self.assertNotIn("Experience content will be replaced here", content)
 
     def test_update_latex_file(self):
         """Test updating a LaTeX file with YAML data."""
@@ -233,6 +237,79 @@ class TestResumeUpdate(unittest.TestCase):
         # as the implementation could use either approach
         self.assertTrue('English' in content and 'Native' in content)
         self.assertTrue('Python | JavaScript | Git' in content)
+
+    def test_update_html_file_raises_when_marker_missing(self):
+        """Missing template markers should fail fast instead of silently skipping."""
+        with open(self.html_path, "w") as f:
+            f.write("<html><body><section><h2>No expected markers</h2></section></body></html>")
+
+        with self.assertRaises(ValueError):
+            update_html_file(self.yaml_data, self.html_path)
+
+    def test_update_latex_file_raises_when_marker_missing(self):
+        """Missing LaTeX section markers should raise an explicit error."""
+        with open(self.tex_path, "w") as f:
+            f.write(r"\documentclass{article}\begin{document}\section{NoMarkers}\end{document}")
+
+        with self.assertRaises(ValueError):
+            update_latex_file(self.yaml_data, self.tex_path)
+
+    def test_escape_latex(self):
+        """LaTeX special characters should be escaped safely."""
+        raw = r"_ % & # $ { } ~ ^ \\"
+        escaped = escape_latex(raw)
+        self.assertIn(r"\_", escaped)
+        self.assertIn(r"\%", escaped)
+        self.assertIn(r"\&", escaped)
+        self.assertIn(r"\#", escaped)
+        self.assertIn(r"\$", escaped)
+        self.assertIn(r"\{", escaped)
+        self.assertIn(r"\}", escaped)
+        self.assertIn(r"\~{}", escaped)
+        self.assertIn(r"\^{}", escaped)
+        self.assertIn(r"\textbackslash{}", escaped)
+
+    def test_update_latex_file_escapes_user_content(self):
+        """User-provided LaTeX special characters should be escaped in output."""
+        self.yaml_data["basics"]["name"] = "Name_One"
+        self.yaml_data["work"][0]["summary"] = "Saved 50% & reduced cost #1"
+        self.yaml_data["education"][0]["courses"] = [r"Path C:\tools"]
+
+        update_latex_file(self.yaml_data, self.tex_path)
+
+        with open(self.tex_path, "r") as f:
+            content = f.read()
+
+        self.assertIn(r"Name\_One", content)
+        self.assertIn(r"50\% \& reduced cost \#1", content)
+        self.assertIn(r"\textbackslash{}tools", content)
+
+    def test_build_degree_text(self):
+        """Degree rendering should prefer explicit value and fallback sensibly."""
+        self.assertEqual(
+            build_degree_text({"degree": "Master of Engineering"}),
+            "Master of Engineering",
+        )
+        self.assertEqual(
+            build_degree_text({"studyType": "Bachelor", "area": "Computer Science"}),
+            "Bachelor in Computer Science",
+        )
+        self.assertEqual(build_degree_text({"studyType": "PhD"}), "PhD")
+        self.assertEqual(build_degree_text({"area": "Design"}), "Design")
+
+    def test_update_outputs_use_data_driven_degree(self):
+        """HTML and LaTeX should render degree text from YAML data."""
+        self.yaml_data["education"][0]["degree"] = "Master of Science in AI"
+        update_html_file(self.yaml_data, self.html_path)
+        update_latex_file(self.yaml_data, self.tex_path)
+
+        with open(self.html_path, "r") as f:
+            html_content = f.read()
+        with open(self.tex_path, "r") as f:
+            tex_content = f.read()
+
+        self.assertIn("Master of Science in AI", html_content)
+        self.assertIn("Master of Science in AI", tex_content)
 
     def test_empty_yaml_data(self):
         """Test handling of empty YAML data."""

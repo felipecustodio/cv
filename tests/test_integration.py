@@ -8,6 +8,7 @@ import yaml
 import filecmp
 import io
 import contextlib
+import importlib.util
 
 # Add parent directory to path to import the update_resume module
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -18,10 +19,11 @@ try:
     from .github.scripts.update_resume import main
 except ImportError:
     # Alternative import path for running directly
-    import imp
     script_path = os.path.join(os.path.dirname(__file__), '..', '.github', 'scripts', 'update_resume.py')
     if os.path.exists(script_path):
-        update_resume = imp.load_source('update_resume', script_path)
+        spec = importlib.util.spec_from_file_location("update_resume", script_path)
+        update_resume = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(update_resume)
         main = update_resume.main
     else:
         print("Warning: Could not import update_resume.py")
@@ -277,7 +279,7 @@ if __name__ == "__main__":
             # Monkey patch os.path.abspath to return test directory paths
             original_abspath = os.path.abspath
             def mock_abspath(path):
-                if path.startswith('../..'):
+                if path.endswith('../..'):
                     return self.test_dir
                 return original_abspath(path)
 
@@ -300,11 +302,15 @@ if __name__ == "__main__":
             with open(self.html_path, 'r') as f:
                 html_content = f.read()
             self.assertNotIn('Old content', html_content)
+            self.assertEqual(html_content.count("Integration Corp"), 1)
+            self.assertEqual(html_content.count("Testing University"), 1)
 
             with open(self.tex_path, 'r') as f:
                 tex_content = f.read()
             self.assertNotIn('Old Name', tex_content)
             self.assertNotIn('Old Label', tex_content)
+            self.assertEqual(tex_content.count(r"\section{Experience}"), 1)
+            self.assertEqual(tex_content.count("Integration Corp"), 1)
 
         finally:
             # Change back to original directory

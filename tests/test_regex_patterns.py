@@ -13,7 +13,7 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_html_experience_pattern(self):
         """Test the regex pattern for updating experience section in HTML."""
-        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
+        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
         test_html = """
         <section class="mt-10 w-full">
             <h2 class="text-2xl font-bold text-white">Experience</h2>
@@ -24,15 +24,16 @@ class TestRegexPatterns(unittest.TestCase):
         """
 
         new_content = "<div>New Experience Content</div>"
-        result = re.sub(pattern, f'\\1\n{new_content}\n\\3', test_html, flags=re.DOTALL)
+        result, count = re.subn(pattern, f'\\1\n{new_content}\n\\3', test_html, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn(new_content, result)
         self.assertNotIn("old-experience-content", result)
 
     def test_html_education_pattern(self):
         """Test the regex pattern for updating education section in HTML."""
-        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>Education.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
+        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Education.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
         test_html = """
         <section class="mt-10 w-full">
             <h2 class="text-2xl font-bold text-white">Education</h2>
@@ -43,15 +44,16 @@ class TestRegexPatterns(unittest.TestCase):
         """
 
         new_content = "<div>New Education Content</div>"
-        result = re.sub(pattern, f'\\1\n{new_content}\n\\3', test_html, flags=re.DOTALL)
+        result, count = re.subn(pattern, f'\\1\n{new_content}\n\\3', test_html, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn(new_content, result)
         self.assertNotIn("old-education-content", result)
 
     def test_html_skills_pattern(self):
         """Test the regex pattern for updating skills section in HTML."""
-        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>Skills.*?</h2>.*?<div class="lin-glass lin-dual-border p-6">)(.*?)(<\/div>\s*<\/section>)'
+        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Skills.*?</h2>.*?<div class="lin-glass lin-dual-border p-6">)(.*?)(<\/div>\s*<\/section>)'
         test_html = """
         <section class="mt-10 w-full">
             <h2 class="text-2xl font-bold text-white">Skills</h2>
@@ -62,9 +64,10 @@ class TestRegexPatterns(unittest.TestCase):
         """
 
         new_content = "<ul><li>New Skills Content</li></ul>"
-        result = re.sub(pattern, f'\\1\n{new_content}\n\\3', test_html, flags=re.DOTALL)
+        result, count = re.subn(pattern, f'\\1\n{new_content}\n\\3', test_html, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn(new_content, result)
         self.assertNotIn("old-skills-content", result)
 
@@ -87,9 +90,10 @@ class TestRegexPatterns(unittest.TestCase):
     & LinkedIn: & \href{https://linkedin.com/in/new}{linkedin.com/in/new} \\
 \end{tabular*}"""
 
-        result = re.sub(pattern, new_content, test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, lambda _: new_content, test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn("New Name", result)
         self.assertIn("new@example.com", result)
         self.assertNotIn("Old Name", result)
@@ -120,9 +124,10 @@ class TestRegexPatterns(unittest.TestCase):
       \resumeItemListEnd
 """
 
-        result = re.sub(pattern, f'\\\\section{{Experience}}\n\n\\\\resumeSubHeadingListStart\n{new_content}\\\\resumeSubHeadingListEnd', test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, f'\\\\section{{Experience}}\n\n\\\\resumeSubHeadingListStart\n{new_content}\\\\resumeSubHeadingListEnd', test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn("New Company", result)
         self.assertIn("New Summary", result)
         self.assertNotIn("Old Company", result)
@@ -154,9 +159,10 @@ class TestRegexPatterns(unittest.TestCase):
       \resumeItemListEnd
 """
 
-        result = re.sub(pattern, f'\\\\section{{Education}}\n  \\\\resumeSubHeadingListStart\n{new_content}  \\\\resumeSubHeadingListEnd', test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, f'\\\\section{{Education}}\n  \\\\resumeSubHeadingListStart\n{new_content}  \\\\resumeSubHeadingListEnd', test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn("New University", result)
         self.assertIn("New course", result)
         self.assertNotIn("Old University", result)
@@ -178,9 +184,10 @@ class TestRegexPatterns(unittest.TestCase):
  \resumeItemListEnd
 """
 
-        result = re.sub(pattern, f'\\\\section{{Skills \\\\& Competencies}}\n{new_content}', test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, f'\\\\section{{Skills \\\\& Competencies}}\n{new_content}', test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
+        self.assertEqual(count, 1)
         self.assertIn("New Languages", result)
         self.assertIn("New Skills", result)
         self.assertNotIn("Old Languages", result)
@@ -188,7 +195,7 @@ class TestRegexPatterns(unittest.TestCase):
     def test_edge_cases(self):
         """Test regex patterns with various edge cases."""
         # Nested sections
-        html_pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
+        html_pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
         nested_html = """
         <section class="mt-10 w-full">
             <h2 class="text-2xl font-bold text-white">Experience</h2>
@@ -201,9 +208,10 @@ class TestRegexPatterns(unittest.TestCase):
         """
 
         new_content = "<div>New nested content</div>"
-        result = re.sub(html_pattern, f'\\1\n{new_content}\n\\3', nested_html, flags=re.DOTALL)
+        result, count = re.subn(html_pattern, f'\\1\n{new_content}\n\\3', nested_html, flags=re.DOTALL)
 
         # Test pattern matched correctly with nested elements
+        self.assertEqual(count, 1)
         self.assertIn(new_content, result)
         self.assertNotIn("Nested content", result)
 
@@ -226,9 +234,10 @@ class TestRegexPatterns(unittest.TestCase):
       {New Position}{Jan. 2023 - Present}
 """
 
-        latex_result = re.sub(latex_pattern, f'\\\\section{{Experience}}\n\n\\\\resumeSubHeadingListStart\n{new_latex_content}\\\\resumeSubHeadingListEnd', commented_latex, flags=re.DOTALL)
+        latex_result, count = re.subn(latex_pattern, f'\\\\section{{Experience}}\n\n\\\\resumeSubHeadingListStart\n{new_latex_content}\\\\resumeSubHeadingListEnd', commented_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly with comments
+        self.assertEqual(count, 1)
         self.assertIn("New Company", latex_result)
         self.assertNotIn("Old Company", latex_result)
 
