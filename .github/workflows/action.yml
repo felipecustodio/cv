@@ -1,16 +1,16 @@
 name: 'Build PDF Resume'
 on:
-  push:
   workflow_run:
     workflows: ["Update Resume from YAML"]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Only run if the update workflow was successful or this is a direct push
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'push' }}
+    # Run only when resume update workflow succeeds, or when manually triggered.
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout
