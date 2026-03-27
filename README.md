@@ -61,7 +61,7 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
 
 2. Install Python dependencies:
    ```bash
-   pip install pyyaml
+   pip install -r requirements-dev.txt
    ```
 
 ## Usage
@@ -87,14 +87,19 @@ tectonic main.tex
 
 This project uses two main GitHub Actions workflows:
 
-1. **Update Resume from YAML**:
+1. **Validate Resume Generation**:
+   - Triggered on pull requests that affect resume sources, templates, generator, or tests
+   - Runs tests and regeneration checks
+   - Fails if generated `index.html` and `main.tex` are out of sync with committed files
+
+2. **Update Resume from YAML**:
    - Triggered when `resume.yaml` is changed
    - Runs tests to validate changes
    - Updates HTML and LaTeX files
    - Commits changes back to the repository
 
-2. **Build PDF Resume**:
-   - Builds after the update workflow completes
+3. **Build PDF Resume**:
+   - Builds after the update workflow completes successfully
    - Compiles LaTeX to PDF
    - Makes PDF available as an artifact
 
