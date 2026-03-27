@@ -111,22 +111,28 @@ class TestIntegration(unittest.TestCase):
                 <title>Test Resume</title>
             </head>
             <body>
-                <section class="mt-10 w-full">
+                <section>
                     <h2>Experience</h2>
-                    <div class="space-y-6">
+                    <div>
+                        <!-- EXPERIENCE:START -->
                         <div>Old content</div>
+                        <!-- EXPERIENCE:END -->
                     </div>
                 </section>
-                <section class="mt-10 w-full">
+                <section>
                     <h2>Education</h2>
-                    <div class="space-y-6">
+                    <div>
+                        <!-- EDUCATION:START -->
                         <div>Old content</div>
+                        <!-- EDUCATION:END -->
                     </div>
                 </section>
-                <section class="mt-10 w-full">
+                <section>
                     <h2>Skills</h2>
-                    <div class="lin-glass lin-dual-border p-6">
+                    <div>
+                        <!-- SKILLS:START -->
                         <div>Old content</div>
+                        <!-- SKILLS:END -->
                     </div>
                 </section>
             </body>

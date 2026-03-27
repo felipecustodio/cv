@@ -99,22 +99,28 @@ class TestResumeUpdate(unittest.TestCase):
                 <title>Test Resume</title>
             </head>
             <body>
-                <section class="mt-10 w-full">
+                <section>
                     <h2>Experience</h2>
-                    <div class="space-y-6">
-                        <!-- Experience content will be replaced here -->
+                    <div>
+                        <!-- EXPERIENCE:START -->
+                        <div>Experience content will be replaced here</div>
+                        <!-- EXPERIENCE:END -->
                     </div>
                 </section>
-                <section class="mt-10 w-full">
+                <section>
                     <h2>Education</h2>
-                    <div class="space-y-6">
-                        <!-- Education content will be replaced here -->
+                    <div>
+                        <!-- EDUCATION:START -->
+                        <div>Education content will be replaced here</div>
+                        <!-- EDUCATION:END -->
                     </div>
                 </section>
-                <section class="mt-10 w-full">
+                <section>
                     <h2>Skills</h2>
-                    <div class="lin-glass lin-dual-border p-6">
-                        <!-- Skills content will be replaced here -->
+                    <div>
+                        <!-- SKILLS:START -->
+                        <div>Skills content will be replaced here</div>
+                        <!-- SKILLS:END -->
                     </div>
                 </section>
             </body>
@@ -215,6 +221,14 @@ class TestResumeUpdate(unittest.TestCase):
         self.assertIn('Python', content)
         self.assertEqual(content.count("Test Company"), 1)
         self.assertNotIn("Experience content will be replaced here", content)
+        self.assertNotIn(r"\1", content)
+        self.assertNotIn(r"\3", content)
+        self.assertIn("<!-- EXPERIENCE:START -->", content)
+        self.assertIn("<!-- EXPERIENCE:END -->", content)
+        self.assertIn("<!-- EDUCATION:START -->", content)
+        self.assertIn("<!-- EDUCATION:END -->", content)
+        self.assertIn("<!-- SKILLS:START -->", content)
+        self.assertIn("<!-- SKILLS:END -->", content)
 
     def test_update_latex_file(self):
         """Test updating a LaTeX file with YAML data."""

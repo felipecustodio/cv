@@ -13,12 +13,14 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_html_experience_pattern(self):
         """Test the regex pattern for updating experience section in HTML."""
-        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
+        pattern = r'(<!-- EXPERIENCE:START -->)(.*?)(<!-- EXPERIENCE:END -->)'
         test_html = """
-        <section class="mt-10 w-full">
-            <h2 class="text-2xl font-bold text-white">Experience</h2>
-            <div class="space-y-6">
+        <section>
+            <h2>Experience</h2>
+            <div>
+                <!-- EXPERIENCE:START -->
                 <div class="old-experience-content">This should be replaced</div>
+                <!-- EXPERIENCE:END -->
             </div>
         </section>
         """
@@ -33,12 +35,14 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_html_education_pattern(self):
         """Test the regex pattern for updating education section in HTML."""
-        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Education.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
+        pattern = r'(<!-- EDUCATION:START -->)(.*?)(<!-- EDUCATION:END -->)'
         test_html = """
-        <section class="mt-10 w-full">
-            <h2 class="text-2xl font-bold text-white">Education</h2>
-            <div class="space-y-6">
+        <section>
+            <h2>Education</h2>
+            <div>
+                <!-- EDUCATION:START -->
                 <div class="old-education-content">This should be replaced</div>
+                <!-- EDUCATION:END -->
             </div>
         </section>
         """
@@ -53,12 +57,14 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_html_skills_pattern(self):
         """Test the regex pattern for updating skills section in HTML."""
-        pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Skills.*?</h2>.*?<div class="lin-glass lin-dual-border p-6">)(.*?)(<\/div>\s*<\/section>)'
+        pattern = r'(<!-- SKILLS:START -->)(.*?)(<!-- SKILLS:END -->)'
         test_html = """
-        <section class="mt-10 w-full">
-            <h2 class="text-2xl font-bold text-white">Skills</h2>
-            <div class="lin-glass lin-dual-border p-6">
+        <section>
+            <h2>Skills</h2>
+            <div>
+                <!-- SKILLS:START -->
                 <div class="old-skills-content">This should be replaced</div>
+                <!-- SKILLS:END -->
             </div>
         </section>
         """
@@ -195,14 +201,16 @@ class TestRegexPatterns(unittest.TestCase):
     def test_edge_cases(self):
         """Test regex patterns with various edge cases."""
         # Nested sections
-        html_pattern = r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)'
+        html_pattern = r'(<!-- EXPERIENCE:START -->)(.*?)(<!-- EXPERIENCE:END -->)'
         nested_html = """
-        <section class="mt-10 w-full">
-            <h2 class="text-2xl font-bold text-white">Experience</h2>
-            <div class="space-y-6">
+        <section>
+            <h2>Experience</h2>
+            <div>
+                <!-- EXPERIENCE:START -->
                 <section>
                     <div>Nested content</div>
                 </section>
+                <!-- EXPERIENCE:END -->
             </div>
         </section>
         """

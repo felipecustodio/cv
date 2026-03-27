@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import re
+import html
 from datetime import datetime
 import yaml
 
@@ -12,7 +13,7 @@ def escape_latex(value):
 
     text = str(value)
     replacements = {
-        "\\": r"\textbackslash{}",
+        "\\": r"\\textbackslash{}",
         "{": r"\{",
         "}": r"\}",
         "$": r"\$",
@@ -26,9 +27,16 @@ def escape_latex(value):
     return re.sub(r"[\\{}$&%#_^~]", lambda match: replacements[match.group(0)], text)
 
 
-def replace_section_or_raise(content, pattern, replacement, section_name):
+def escape_html(value):
+    """Escape HTML-special characters in user-provided content."""
+    if value is None:
+        return ""
+    return html.escape(str(value), quote=True)
+
+
+def replace_section_or_raise(content, pattern, replacement_fn, section_name):
     """Replace one section and fail if template markers are missing or duplicated."""
-    updated, count = re.subn(pattern, lambda _: replacement, content, flags=re.DOTALL)
+    updated, count = re.subn(pattern, replacement_fn, content, flags=re.DOTALL)
     if count != 1:
         raise ValueError(
             f"Could not uniquely update {section_name}; expected 1 match, found {count}."
@@ -87,80 +95,81 @@ def update_html_file(data, file_path):
     # Update experience section
     work_html = ""
     for job in data.get('work', []):
-        start_date = format_date(job.get('startDate'))
-        end_date = format_date(job.get('endDate'))
+        start_date = escape_html(format_date(job.get('startDate')))
+        end_date = escape_html(format_date(job.get('endDate')))
 
         highlights_html = ""
         for highlight in job.get('highlights', []):
-            highlights_html += f'<li>{highlight}</li>\n'
+            highlights_html += f'                <li>{escape_html(highlight)}</li>\n'
 
         work_html += f'''
-        <div class="lin-glass lin-dual-border p-6">
-            <h3 class="text-xl font-bold text-white">{job.get('name', '')}</h3>
-            <p class="text-white">{job.get('position', '')}</p>
-            <p class="lin-text-secondary mb-2">{job.get('location', '')} | {start_date} - {end_date}</p>
-            <ul class="list-disc list-inside text-white space-y-1">
-                <li>{job.get('summary', '')}</li>
+        <article class="entry-card">
+            <h3 class="entry-title">{escape_html(job.get('name', ''))}</h3>
+            <p class="entry-role">{escape_html(job.get('position', ''))}</p>
+            <p class="entry-meta">{escape_html(job.get('location', ''))} | {start_date} - {end_date}</p>
+            <ul class="entry-list">
+                <li>{escape_html(job.get('summary', ''))}</li>
                 {highlights_html}
             </ul>
-        </div>
+        </article>
         '''
 
     # Update education section
     education_html = ""
     for edu in data.get('education', []):
-        start_date = format_date(edu.get('startDate'))
-        end_date = format_date(edu.get('endDate'))
+        start_date = escape_html(format_date(edu.get('startDate')))
+        end_date = escape_html(format_date(edu.get('endDate')))
 
         courses_html = ""
         for course in edu.get('courses', []):
-            courses_html += f'<li>{course}</li>\n'
+            courses_html += f'                <li>{escape_html(course)}</li>\n'
 
-        degree_type = build_degree_text(edu)
+        degree_type = escape_html(build_degree_text(edu))
 
         education_html += f'''
-        <div class="lin-glass lin-dual-border p-6">
-            <h3 class="text-xl font-bold text-white">{edu.get('institution', '')}</h3>
-            <p class="text-white">{degree_type}</p>
-            <p class="lin-text-secondary mb-2">{edu.get('location', '')} | {start_date} - {end_date}</p>
-            <ul class="list-disc list-inside text-white space-y-1">
+        <article class="entry-card entry-card--education">
+            <h3 class="entry-title">{escape_html(edu.get('institution', ''))}</h3>
+            <p class="entry-role">{degree_type}</p>
+            <p class="entry-meta">{escape_html(edu.get('location', ''))} | {start_date} - {end_date}</p>
+            <ul class="entry-list">
                 {courses_html}
             </ul>
-        </div>
+        </article>
         '''
 
     # Update skills section
-    skills_html = "<ul class=\"list-disc list-inside text-white space-y-2\">\n"
+    skills_html = "<ul class=\"skills-list\">\n"
     for skill in data.get('skills', []):
-        skill_name = skill.get("name", "Skills")
+        skill_name = escape_html(skill.get("name", "Skills"))
+        keywords = ", ".join(escape_html(keyword) for keyword in skill.get("keywords", []))
         if skill_name == "Languages":
-            skills_html += f'<li>Languages: {", ".join(skill.get("keywords", []))}</li>\n'
+            skills_html += f'    <li><span class="skills-label">Languages</span> {keywords}</li>\n'
         else:
-            skills_html += f'<li>{skill_name}: {", ".join(skill.get("keywords", []))}</li>\n'
+            skills_html += f'    <li><span class="skills-label">{skill_name}</span> {keywords}</li>\n'
     skills_html += "</ul>"
 
     # Replace content in HTML using regex patterns
     # Experience section
     html_content = replace_section_or_raise(
         html_content,
-        r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Experience.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)',
-        f'\\1\n{work_html}\n\\3',
+        r'(<!-- EXPERIENCE:START -->)(.*?)(<!-- EXPERIENCE:END -->)',
+        lambda m: f'{m.group(1)}\n{work_html}\n        {m.group(3)}',
         "HTML experience section",
     )
 
     # Education section
     html_content = replace_section_or_raise(
         html_content,
-        r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Education.*?</h2>.*?<div class="space-y-6">)(.*?)(<\/div>\s*<\/section>)',
-        f'\\1\n{education_html}\n\\3',
+        r'(<!-- EDUCATION:START -->)(.*?)(<!-- EDUCATION:END -->)',
+        lambda m: f'{m.group(1)}\n{education_html}\n        {m.group(3)}',
         "HTML education section",
     )
 
     # Skills section
     html_content = replace_section_or_raise(
         html_content,
-        r'(<section class="mt-10 w-full">.*?<h2.*?>.*?Skills.*?</h2>.*?<div class="lin-glass lin-dual-border p-6">)(.*?)(<\/div>\s*<\/section>)',
-        f'\\1\n{skills_html}\n\\3',
+        r'(<!-- SKILLS:START -->)(.*?)(<!-- SKILLS:END -->)',
+        lambda m: f'{m.group(1)}\n{skills_html}\n        {m.group(3)}',
         "HTML skills section",
     )
 
