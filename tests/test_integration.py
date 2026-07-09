@@ -147,17 +147,20 @@ class TestIntegration(unittest.TestCase):
             \begin{document}
 
             %----------HEADING-----------------
+            % HEADER:START
             \begin{tabular*}{\textwidth}
                 {l@{\extracolsep{\fill}}l@{\extracolsep{6pt}}r}
                 \textbf{\LARGE Old Name} & Email: & \href{mailto:old@example.com}{old@example.com} \\
                 {\large Old Label} & Github: & \href{https://github.com/old}{github.com/old} \\
                 & LinkedIn: & \href{https://linkedin.com/in/old}{linkedin.com/in/old} \\
             \end{tabular*}
+            % HEADER:END
 
 
             %-----------EXPERIENCE-----------------
             \section{Experience}
 
+            % EXPERIENCE:START
             \resumeSubHeadingListStart
               \resumeSubheading
                   {Old Company}{Old Location}
@@ -167,9 +170,11 @@ class TestIntegration(unittest.TestCase):
                         {Old Summary}
                   \resumeItemListEnd
             \resumeSubHeadingListEnd
+            % EXPERIENCE:END
 
             %-----------EDUCATION-----------------
             \section{Education}
+              % EDUCATION:START
               \resumeSubHeadingListStart
                 \resumeSubheading
                   {Old University}{Old Location}
@@ -180,12 +185,15 @@ class TestIntegration(unittest.TestCase):
                       {Old course}
                   \resumeItemListEnd
               \resumeSubHeadingListEnd
+              % EDUCATION:END
 
             %-------- SKILLS------------
             \section{Skills \& Competencies}
-             \resumeItemListStart
-                \resumeItem{Old Skills}{}
-             \resumeItemListEnd
+              % SKILLS:START
+              \resumeItemListStart
+                 \resumeItem{Old Skills}{}
+              \resumeItemListEnd
+              % SKILLS:END
 
 %-------------------------------------------
             \end{document}
@@ -322,6 +330,46 @@ if __name__ == "__main__":
         finally:
             # Change back to original directory
             os.chdir(original_cwd)
+
+    def test_production_templates_sync(self):
+        """Test that the generator runs successfully against the actual production templates in the repository."""
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+        actual_yaml = os.path.join(base_dir, 'resume.yaml')
+        actual_html = os.path.join(base_dir, 'index.html')
+        actual_tex = os.path.join(base_dir, 'main.tex')
+        actual_script = os.path.join(base_dir, '.github', 'scripts', 'update_resume.py')
+
+        # Create temporary copies
+        temp_html = os.path.join(self.test_dir, 'index.html')
+        temp_tex = os.path.join(self.test_dir, 'main.tex')
+        shutil.copy(actual_html, temp_html)
+        shutil.copy(actual_tex, temp_tex)
+
+        spec = importlib.util.spec_from_file_location("update_resume_prod", actual_script)
+        prod_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(prod_module)
+
+        data = prod_module.load_yaml_data(actual_yaml)
+
+        try:
+            prod_module.update_html_file(data, temp_html)
+            prod_module.update_latex_file(data, temp_tex)
+        except Exception as e:
+            self.fail(f"Failed to generate output using actual production templates: {e}")
+
+        # Verify comment markers exist and template replaced successfully
+        with open(temp_html, 'r') as f:
+            html_content = f.read()
+        self.assertIn("<!-- EXPERIENCE:START -->", html_content)
+        self.assertIn("<!-- EDUCATION:START -->", html_content)
+        self.assertIn("<!-- SKILLS:START -->", html_content)
+
+        with open(temp_tex, 'r') as f:
+            tex_content = f.read()
+        self.assertIn("% HEADER:START", tex_content)
+        self.assertIn("% EXPERIENCE:START", tex_content)
+        self.assertIn("% EDUCATION:START", tex_content)
+        self.assertIn("% SKILLS:START", tex_content)
 
 if __name__ == '__main__':
     unittest.main()

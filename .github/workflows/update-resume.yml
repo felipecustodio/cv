@@ -5,6 +5,11 @@ on:
       - main
     paths:
       - 'resume.yaml'
+      - 'index.html'
+      - 'main.tex'
+      - '.github/scripts/**'
+      - '.github/workflows/update-resume.yml'
+      - 'assets/**'
 
 jobs:
   test-and-update:

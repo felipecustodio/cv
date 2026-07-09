@@ -6,6 +6,38 @@ from datetime import datetime
 import yaml
 
 
+HTML_WORK_TEMPLATE = '''
+        <article class="entry-card">
+            <div class="entry-header">{logo_html}
+                <div class="entry-header-text">
+                    <h3 class="entry-title">{heading_content}</h3>
+                    <p class="entry-role">{position}</p>
+                    <p class="entry-meta">{location} | {start_date} - {end_date}</p>
+                </div>
+            </div>
+            <ul class="entry-list">
+                <li>{summary}</li>
+                {highlights_html}
+            </ul>
+        </article>
+'''
+
+HTML_EDUCATION_TEMPLATE = '''
+        <article class="entry-card entry-card--education">
+            <div class="entry-header">{logo_html}
+                <div class="entry-header-text">
+                    <h3 class="entry-title">{heading_content}</h3>
+                    <p class="entry-role">{degree_type}</p>
+                    <p class="entry-meta">{location} | {start_date} - {end_date}</p>
+                </div>
+            </div>
+            <ul class="entry-list">
+                {courses_html}
+            </ul>
+        </article>
+'''
+
+
 def escape_latex(value):
     """Escape LaTeX-special characters in user-provided content."""
     if value is None:
@@ -122,21 +154,16 @@ def update_html_file(data, file_path):
         else:
             logo_html = ''
 
-        work_html += f'''
-        <article class="entry-card">
-            <div class="entry-header">{logo_html}
-                <div class="entry-header-text">
-                    <h3 class="entry-title">{heading_content}</h3>
-                    <p class="entry-role">{escape_html(job.get('position', ''))}</p>
-                    <p class="entry-meta">{escape_html(job.get('location', ''))} | {start_date} - {end_date}</p>
-                </div>
-            </div>
-            <ul class="entry-list">
-                <li>{escape_html(job.get('summary', ''))}</li>
-                {highlights_html}
-            </ul>
-        </article>
-        '''
+        work_html += HTML_WORK_TEMPLATE.format(
+            logo_html=logo_html,
+            heading_content=heading_content,
+            position=escape_html(job.get('position', '')),
+            location=escape_html(job.get('location', '')),
+            start_date=start_date,
+            end_date=end_date,
+            summary=escape_html(job.get('summary', '')),
+            highlights_html=highlights_html
+        )
 
     # Update education section
     education_html = ""
@@ -166,20 +193,15 @@ def update_html_file(data, file_path):
         else:
             logo_html = ''
 
-        education_html += f'''
-        <article class="entry-card entry-card--education">
-            <div class="entry-header">{logo_html}
-                <div class="entry-header-text">
-                    <h3 class="entry-title">{heading_content}</h3>
-                    <p class="entry-role">{degree_type}</p>
-                    <p class="entry-meta">{escape_html(edu.get('location', ''))} | {start_date} - {end_date}</p>
-                </div>
-            </div>
-            <ul class="entry-list">
-                {courses_html}
-            </ul>
-        </article>
-        '''
+        education_html += HTML_EDUCATION_TEMPLATE.format(
+            logo_html=logo_html,
+            heading_content=heading_content,
+            degree_type=degree_type,
+            location=escape_html(edu.get('location', '')),
+            start_date=start_date,
+            end_date=end_date,
+            courses_html=courses_html
+        )
 
     # Update skills section
     skills_html = "<ul class=\"skills-list\">\n"
@@ -246,10 +268,7 @@ def update_latex_file(data, file_path):
 & LinkedIn: & \\href{{{linkedin_url}}}{{linkedin.com/in/{linkedin_username}}} \\\\'''
 
     # Update the header in the LaTeX file with proper escaping
-    latex_content = replace_section_or_raise(
-        latex_content,
-        r'\\begin\{tabular\*\}\{\\textwidth\}.*?\\end\{tabular\*\}',
-        f'''\\begin{{tabular*}}{{\\textwidth}}
+    header_table = f'''\\begin{{tabular*}}{{\\textwidth}}
     {{
     l@{{\\extracolsep{{\\fill}}}}l
     @{{\\extracolsep{{6pt}}}}r
@@ -261,7 +280,12 @@ def update_latex_file(data, file_path):
 
 {header_latex}
 
-\\end{{tabular*}}''',
+\\end{{tabular*}}'''
+
+    latex_content = replace_section_or_raise(
+        latex_content,
+        r'(\% HEADER:START\s*)(.*?)(\s*\% HEADER:END)',
+        lambda m: f'{m.group(1)}{header_table}{m.group(3)}',
         "LaTeX header table",
     )
 
@@ -297,8 +321,8 @@ def update_latex_file(data, file_path):
     # Update the experience section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'\\section\{Experience\}.*?\\resumeSubHeadingListStart(.*?)\\resumeSubHeadingListEnd',
-        f'\\section{{Experience}}\n\n\\resumeSubHeadingListStart\n{work_latex}\\resumeSubHeadingListEnd',
+        r'(\% EXPERIENCE:START\s*)(.*?)(\s*\% EXPERIENCE:END)',
+        lambda m: f'{m.group(1)}\\resumeSubHeadingListStart\n{work_latex}  \\resumeSubHeadingListEnd{m.group(3)}',
         "LaTeX experience section",
     )
 
@@ -338,8 +362,8 @@ def update_latex_file(data, file_path):
     # Update the education section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'\\section\{Education\}.*?\\resumeSubHeadingListStart(.*?)\\resumeSubHeadingListEnd',
-        f'\\section{{Education}}\n  \\resumeSubHeadingListStart\n{education_latex}  \\resumeSubHeadingListEnd',
+        r'(\% EDUCATION:START\s*)(.*?)(\s*\% EDUCATION:END)',
+        lambda m: f'{m.group(1)}\\resumeSubHeadingListStart\n{education_latex}  \\resumeSubHeadingListEnd{m.group(3)}',
         "LaTeX education section",
     )
 
@@ -383,8 +407,8 @@ def update_latex_file(data, file_path):
     # Update the skills section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'\\section\{Skills \\& Competencies\}.*?(?=\%-------------------------------------------)',
-        f'\\section{{Skills \\& Competencies}}\n{skills_latex}\n\n',
+        r'(\% SKILLS:START\s*)(.*?)(\s*\% SKILLS:END)',
+        lambda m: f'{m.group(1)}{skills_latex}{m.group(3)}',
         "LaTeX skills section",
     )
 

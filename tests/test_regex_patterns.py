@@ -79,14 +79,16 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_latex_header_pattern(self):
         """Test the regex pattern for updating the header in LaTeX files."""
-        pattern = r'\\begin{tabular\*}{\\textwidth}.*?\\end{tabular\*}'
+        pattern = r'(\% HEADER:START\s*)(.*?)(\s*\% HEADER:END)'
         test_latex = r"""
+        % HEADER:START
         \begin{tabular*}{\textwidth}
             {l@{\extracolsep{\fill}}l@{\extracolsep{6pt}}r}
             \textbf{\LARGE Old Name} & Email: & \href{mailto:old@example.com}{old@example.com} \\
             {\large Old Label} & Github: & \href{https://github.com/old}{github.com/old} \\
             & LinkedIn: & \href{https://linkedin.com/in/old}{linkedin.com/in/old} \\
         \end{tabular*}
+        % HEADER:END
         """
 
         new_content = r"""\begin{tabular*}{\textwidth}
@@ -96,7 +98,7 @@ class TestRegexPatterns(unittest.TestCase):
     & LinkedIn: & \href{https://linkedin.com/in/new}{linkedin.com/in/new} \\
 \end{tabular*}"""
 
-        result, count = re.subn(pattern, lambda _: new_content, test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, lambda m: f'{m.group(1)}{new_content}{m.group(3)}', test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
         self.assertEqual(count, 1)
@@ -106,10 +108,9 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_latex_experience_pattern(self):
         """Test the regex pattern for updating experience section in LaTeX files."""
-        pattern = r'\\section{Experience}.*?\\resumeSubHeadingListStart(.*?)\\resumeSubHeadingListEnd'
+        pattern = r'(\% EXPERIENCE:START\s*)(.*?)(\s*\% EXPERIENCE:END)'
         test_latex = r"""
-        \section{Experience}
-
+        % EXPERIENCE:START
         \resumeSubHeadingListStart
           \resumeSubheading
               {Old Company}{Old Location}
@@ -119,6 +120,7 @@ class TestRegexPatterns(unittest.TestCase):
                     {Old Summary}
               \resumeItemListEnd
         \resumeSubHeadingListEnd
+        % EXPERIENCE:END
         """
 
         new_content = r"""  \resumeSubheading
@@ -130,7 +132,7 @@ class TestRegexPatterns(unittest.TestCase):
       \resumeItemListEnd
 """
 
-        result, count = re.subn(pattern, f'\\\\section{{Experience}}\n\n\\\\resumeSubHeadingListStart\n{new_content}\\\\resumeSubHeadingListEnd', test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, lambda m: f'{m.group(1)}\\resumeSubHeadingListStart\n{new_content}  \\resumeSubHeadingListEnd{m.group(3)}', test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
         self.assertEqual(count, 1)
@@ -140,19 +142,20 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_latex_education_pattern(self):
         """Test the regex pattern for updating education section in LaTeX files."""
-        pattern = r'\\section{Education}.*?\\resumeSubHeadingListStart(.*?)\\resumeSubHeadingListEnd'
+        pattern = r'(\% EDUCATION:START\s*)(.*?)(\s*\% EDUCATION:END)'
         test_latex = r"""
-        \section{Education}
-          \resumeSubHeadingListStart
-            \resumeSubheading
-              {Old University}{Old Location}
-              {Old Degree}{Jan. 2015 -- Dec. 2019}
+        % EDUCATION:START
+        \resumeSubHeadingListStart
+          \resumeSubheading
+            {Old University}{Old Location}
+            {Old Degree}{Jan. 2015 -- Dec. 2019}
 
-              \resumeItemListStart
-                \resumeSubItemNoBullet
-                  {Old course}
-              \resumeItemListEnd
-          \resumeSubHeadingListEnd
+            \resumeItemListStart
+              \resumeSubItemNoBullet
+                {Old course}
+            \resumeItemListEnd
+        \resumeSubHeadingListEnd
+        % EDUCATION:END
         """
 
         new_content = r"""    \resumeSubheading
@@ -165,7 +168,7 @@ class TestRegexPatterns(unittest.TestCase):
       \resumeItemListEnd
 """
 
-        result, count = re.subn(pattern, f'\\\\section{{Education}}\n  \\\\resumeSubHeadingListStart\n{new_content}  \\\\resumeSubHeadingListEnd', test_latex, flags=re.DOTALL)
+        result, count = re.subn(pattern, lambda m: f'{m.group(1)}\\resumeSubHeadingListStart\n{new_content}  \\resumeSubHeadingListEnd{m.group(3)}', test_latex, flags=re.DOTALL)
 
         # Test pattern matched correctly
         self.assertEqual(count, 1)

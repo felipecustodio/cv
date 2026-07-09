@@ -136,17 +136,20 @@ class TestResumeUpdate(unittest.TestCase):
             \begin{document}
 
             %----------HEADING-----------------
+            % HEADER:START
             \begin{tabular*}{\textwidth}
                 {l@{\extracolsep{\fill}}l@{\extracolsep{6pt}}r}
                 \textbf{\LARGE Name} & Email: & \href{mailto:email@example.com}{email@example.com} \\
                 {\large Label} & Github: & \href{https://github.com/user}{github.com/user} \\
                 & LinkedIn: & \href{https://linkedin.com/in/user}{linkedin.com/in/user} \\
             \end{tabular*}
+            % HEADER:END
 
 
             %-----------EXPERIENCE-----------------
             \section{Experience}
 
+            % EXPERIENCE:START
             \resumeSubHeadingListStart
               \resumeSubheading
                   {Company}{Location}
@@ -160,9 +163,11 @@ class TestResumeUpdate(unittest.TestCase):
                         {Highlight 2}
                   \resumeItemListEnd
             \resumeSubHeadingListEnd
+            % EXPERIENCE:END
 
             %-----------EDUCATION-----------------
             \section{Education}
+              % EDUCATION:START
               \resumeSubHeadingListStart
                 \resumeSubheading
                   {University}{Location}
@@ -173,13 +178,16 @@ class TestResumeUpdate(unittest.TestCase):
                       {Course description}
                   \resumeItemListEnd
               \resumeSubHeadingListEnd
+              % EDUCATION:END
 
             %-------- SKILLS------------
             \section{Skills \& Competencies}
-             \resumeItemListStart
-                \resumeItem{Languages}{}
-                \resumeItem{Skills and Tools}{}
-             \resumeItemListEnd
+              % SKILLS:START
+              \resumeItemListStart
+                 \resumeItem{Languages}{}
+                 \resumeItem{Skills and Tools}{}
+              \resumeItemListEnd
+              % SKILLS:END
 
 %-------------------------------------------
             \end{document}

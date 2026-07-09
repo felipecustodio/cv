@@ -9,6 +9,8 @@ on:
       - .github/scripts/update_resume.py
       - tests/**
       - requirements*.txt
+      - assets/**
+      - .github/workflows/validate-resume.yml
 
 jobs:
   validate:
