@@ -352,24 +352,39 @@ if __name__ == "__main__":
         data = prod_module.load_yaml_data(actual_yaml)
 
         try:
+            # First pass
             prod_module.update_html_file(data, temp_html)
             prod_module.update_latex_file(data, temp_tex)
+            
+            with open(temp_html, 'r') as f:
+                html_first = f.read()
+            with open(temp_tex, 'r') as f:
+                tex_first = f.read()
+
+            # Second pass (verifies idempotency)
+            prod_module.update_html_file(data, temp_html)
+            prod_module.update_latex_file(data, temp_tex)
+
+            with open(temp_html, 'r') as f:
+                html_second = f.read()
+            with open(temp_tex, 'r') as f:
+                tex_second = f.read()
         except Exception as e:
             self.fail(f"Failed to generate output using actual production templates: {e}")
 
-        # Verify comment markers exist and template replaced successfully
-        with open(temp_html, 'r') as f:
-            html_content = f.read()
-        self.assertIn("<!-- EXPERIENCE:START -->", html_content)
-        self.assertIn("<!-- EDUCATION:START -->", html_content)
-        self.assertIn("<!-- SKILLS:START -->", html_content)
+        # Verify idempotency
+        self.assertEqual(html_first, html_second, "HTML generation should be idempotent (no duplicate sections on re-run)")
+        self.assertEqual(tex_first, tex_second, "LaTeX generation should be idempotent (no duplicate sections on re-run)")
 
-        with open(temp_tex, 'r') as f:
-            tex_content = f.read()
-        self.assertIn("% HEADER:START", tex_content)
-        self.assertIn("% EXPERIENCE:START", tex_content)
-        self.assertIn("% EDUCATION:START", tex_content)
-        self.assertIn("% SKILLS:START", tex_content)
+        # Verify comment markers exist and template replaced successfully
+        self.assertIn("<!-- EXPERIENCE:START -->", html_first)
+        self.assertIn("<!-- EDUCATION:START -->", html_first)
+        self.assertIn("<!-- SKILLS:START -->", html_first)
+
+        self.assertIn("% HEADER:START", tex_first)
+        self.assertIn("% EXPERIENCE:START", tex_first)
+        self.assertIn("% EDUCATION:START", tex_first)
+        self.assertIn("% SKILLS:START", tex_first)
 
 if __name__ == '__main__':
     unittest.main()

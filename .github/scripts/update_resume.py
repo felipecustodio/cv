@@ -284,8 +284,8 @@ def update_latex_file(data, file_path):
 
     latex_content = replace_section_or_raise(
         latex_content,
-        r'(\% HEADER:START\s*)(.*?)(\s*\% HEADER:END)',
-        lambda m: f'{m.group(1)}{header_table}{m.group(3)}',
+        r'(\% HEADER:START)(.*?)(\% HEADER:END)',
+        lambda m: f'{m.group(1)}\n{header_table}\n{m.group(3)}',
         "LaTeX header table",
     )
 
@@ -321,8 +321,8 @@ def update_latex_file(data, file_path):
     # Update the experience section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'(\% EXPERIENCE:START\s*)(.*?)(\s*\% EXPERIENCE:END)',
-        lambda m: f'{m.group(1)}\\resumeSubHeadingListStart\n{work_latex}  \\resumeSubHeadingListEnd{m.group(3)}',
+        r'(\% EXPERIENCE:START)(.*?)(\% EXPERIENCE:END)',
+        lambda m: f'{m.group(1)}\n  \\resumeSubHeadingListStart\n{work_latex}  \\resumeSubHeadingListEnd\n  {m.group(3)}',
         "LaTeX experience section",
     )
 
@@ -362,13 +362,13 @@ def update_latex_file(data, file_path):
     # Update the education section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'(\% EDUCATION:START\s*)(.*?)(\s*\% EDUCATION:END)',
-        lambda m: f'{m.group(1)}\\resumeSubHeadingListStart\n{education_latex}  \\resumeSubHeadingListEnd{m.group(3)}',
+        r'(\% EDUCATION:START)(.*?)(\% EDUCATION:END)',
+        lambda m: f'{m.group(1)}\n  \\resumeSubHeadingListStart\n{education_latex}  \\resumeSubHeadingListEnd\n  {m.group(3)}',
         "LaTeX education section",
     )
 
     # Update skills section
-    skills_latex = " \\resumeItemListStart\n"
+    skills_latex = "\\resumeItemListStart\n"
 
     for skill in data.get('skills', []):
         skill_name = escape_latex(skill.get('name'))
@@ -402,13 +402,13 @@ def update_latex_file(data, file_path):
     }}
 '''
 
-    skills_latex += " \\resumeItemListEnd\n"
+    skills_latex += "  \\resumeItemListEnd"
 
     # Update the skills section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'(\% SKILLS:START\s*)(.*?)(\s*\% SKILLS:END)',
-        lambda m: f'{m.group(1)}{skills_latex}{m.group(3)}',
+        r'(\% SKILLS:START)(.*?)(\% SKILLS:END)',
+        lambda m: f'{m.group(1)}\n  {skills_latex}\n  {m.group(3)}',
         "LaTeX skills section",
     )
 
