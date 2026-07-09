@@ -175,19 +175,22 @@ class TestRegexPatterns(unittest.TestCase):
 
     def test_latex_skills_pattern(self):
         """Test the regex pattern for updating skills section in LaTeX files."""
-        pattern = r'\\section{Skills \\& Competencies}.*?\\resumeItemListStart(.*?)\\resumeItemListEnd'
+        pattern = r'\\section{Skills \\& Competencies}.*?(?=\%-------------------------------------------)'
         test_latex = r"""
         \section{Skills \& Competencies}
          \resumeItemListStart
             \resumeItem{Old Languages}{}
             \resumeItem{Old Skills}{}
          \resumeItemListEnd
+
+%-------------------------------------------
         """
 
         new_content = r""" \resumeItemListStart
     \resumeItem{New Languages}{}
     \resumeItem{New Skills}{}
  \resumeItemListEnd
+
 """
 
         result, count = re.subn(pattern, f'\\\\section{{Skills \\\\& Competencies}}\n{new_content}', test_latex, flags=re.DOTALL)

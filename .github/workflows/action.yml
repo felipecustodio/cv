@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     # Run only when resume update workflow succeeds, or when manually triggered.
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
@@ -34,3 +36,12 @@ jobs:
         with:
           name: main
           path: main.pdf
+
+      - name: Commit and Push PDF
+        run: |
+          mv main.pdf resume.pdf
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add resume.pdf
+          git commit -m 'build: Update generated PDF' || echo "No changes to commit"
+          git push origin main

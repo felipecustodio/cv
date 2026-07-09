@@ -187,6 +187,7 @@ class TestIntegration(unittest.TestCase):
                 \resumeItem{Old Skills}{}
              \resumeItemListEnd
 
+%-------------------------------------------
             \end{document}
             """)
 

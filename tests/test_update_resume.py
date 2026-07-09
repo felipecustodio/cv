@@ -181,6 +181,7 @@ class TestResumeUpdate(unittest.TestCase):
                 \resumeItem{Skills and Tools}{}
              \resumeItemListEnd
 
+%-------------------------------------------
             \end{document}
             """)
 

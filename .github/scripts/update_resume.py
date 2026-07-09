@@ -383,8 +383,8 @@ def update_latex_file(data, file_path):
     # Update the skills section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
-        r'\\section\{Skills \\& Competencies\}.*?\\resumeItemListStart(.*?)\\resumeItemListEnd',
-        f'\\section{{Skills \\& Competencies}}\n{skills_latex}',
+        r'\\section\{Skills \\& Competencies\}.*?(?=\%-------------------------------------------)',
+        f'\\section{{Skills \\& Competencies}}\n{skills_latex}\n\n',
         "LaTeX skills section",
     )
 
