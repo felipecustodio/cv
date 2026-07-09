@@ -36,7 +36,11 @@ def escape_html(value):
 
 def replace_section_or_raise(content, pattern, replacement_fn, section_name):
     """Replace one section and fail if template markers are missing or duplicated."""
-    updated, count = re.subn(pattern, replacement_fn, content, flags=re.DOTALL)
+    if isinstance(replacement_fn, str):
+        repl = lambda _: replacement_fn
+    else:
+        repl = replacement_fn
+    updated, count = re.subn(pattern, repl, content, flags=re.DOTALL)
     if count != 1:
         raise ValueError(
             f"Could not uniquely update {section_name}; expected 1 match, found {count}."
@@ -102,11 +106,31 @@ def update_html_file(data, file_path):
         for highlight in job.get('highlights', []):
             highlights_html += f'                <li>{escape_html(highlight)}</li>\n'
 
+        job_name = escape_html(job.get('name', ''))
+        job_url = job.get('url')
+        if job_url:
+            heading_content = f'<a href="{escape_html(job_url)}" target="_blank" rel="noopener" class="company-link">{job_name}</a>'
+        else:
+            heading_content = job_name
+
+        logo_path = job.get('logo')
+        if logo_path:
+            logo_html = f'''
+            <div class="entry-logo">
+                <img src="{escape_html(logo_path)}" alt="{job_name} logo">
+            </div>'''
+        else:
+            logo_html = ''
+
         work_html += f'''
         <article class="entry-card">
-            <h3 class="entry-title">{escape_html(job.get('name', ''))}</h3>
-            <p class="entry-role">{escape_html(job.get('position', ''))}</p>
-            <p class="entry-meta">{escape_html(job.get('location', ''))} | {start_date} - {end_date}</p>
+            <div class="entry-header">{logo_html}
+                <div class="entry-header-text">
+                    <h3 class="entry-title">{heading_content}</h3>
+                    <p class="entry-role">{escape_html(job.get('position', ''))}</p>
+                    <p class="entry-meta">{escape_html(job.get('location', ''))} | {start_date} - {end_date}</p>
+                </div>
+            </div>
             <ul class="entry-list">
                 <li>{escape_html(job.get('summary', ''))}</li>
                 {highlights_html}
@@ -126,11 +150,31 @@ def update_html_file(data, file_path):
 
         degree_type = escape_html(build_degree_text(edu))
 
+        edu_name = escape_html(edu.get('institution', ''))
+        edu_url = edu.get('url')
+        if edu_url:
+            heading_content = f'<a href="{escape_html(edu_url)}" target="_blank" rel="noopener" class="company-link">{edu_name}</a>'
+        else:
+            heading_content = edu_name
+
+        logo_path = edu.get('logo')
+        if logo_path:
+            logo_html = f'''
+            <div class="entry-logo">
+                <img src="{escape_html(logo_path)}" alt="{edu_name} logo">
+            </div>'''
+        else:
+            logo_html = ''
+
         education_html += f'''
         <article class="entry-card entry-card--education">
-            <h3 class="entry-title">{escape_html(edu.get('institution', ''))}</h3>
-            <p class="entry-role">{degree_type}</p>
-            <p class="entry-meta">{escape_html(edu.get('location', ''))} | {start_date} - {end_date}</p>
+            <div class="entry-header">{logo_html}
+                <div class="entry-header-text">
+                    <h3 class="entry-title">{heading_content}</h3>
+                    <p class="entry-role">{degree_type}</p>
+                    <p class="entry-meta">{escape_html(edu.get('location', ''))} | {start_date} - {end_date}</p>
+                </div>
+            </div>
             <ul class="entry-list">
                 {courses_html}
             </ul>
@@ -195,29 +239,29 @@ def update_latex_file(data, file_path):
     linkedin_username = escape_latex(linkedin_profile.get('username', ''))
 
     # Update header section with proper escaping for LaTeX
-    header_latex = f'''\\\\textbf{{\\\\LARGE {name}}}
-& Email: & \\\\href{{mailto:{email}}}{{{email}}} \\\\\\\\
-{{\\\\large {label}}}
-& Github: & \\\\href{{{github_url}}}{{github.com/{github_username}}} \\\\\\\\
-& LinkedIn: & \\\\href{{{linkedin_url}}}{{linkedin.com/in/{linkedin_username}}} \\\\\\\\'''
+    header_latex = f'''\\textbf{{\\LARGE {name}}}
+& Email: & \\href{{mailto:{email}}}{{{email}}} \\\\
+{{\\large {label}}}
+& Github: & \\href{{{github_url}}}{{github.com/{github_username}}} \\\\
+& LinkedIn: & \\href{{{linkedin_url}}}{{linkedin.com/in/{linkedin_username}}} \\\\'''
 
     # Update the header in the LaTeX file with proper escaping
     latex_content = replace_section_or_raise(
         latex_content,
         r'\\begin\{tabular\*\}\{\\textwidth\}.*?\\end\{tabular\*\}',
-        f'''\\\\begin{{tabular*}}{{\\\\textwidth}}
+        f'''\\begin{{tabular*}}{{\\textwidth}}
     {{
-    l@{{\\\\extracolsep{{\\\\fill}}}}l
-    @{{\\\\extracolsep{{6pt}}}}r
-    l@{{\\\\extracolsep{{\\\\fill}}}}l
-    @{{\\\\extracolsep{{6pt}}}}r
-    @{{\\\\extracolsep{{6pt}}}}r
-    @{{\\\\extracolsep{{6pt}}}}r
+    l@{{\\extracolsep{{\\fill}}}}l
+    @{{\\extracolsep{{6pt}}}}r
+    l@{{\\extracolsep{{\\fill}}}}l
+    @{{\\extracolsep{{6pt}}}}r
+    @{{\\extracolsep{{6pt}}}}r
+    @{{\\extracolsep{{6pt}}}}r
     }}
 
 {header_latex}
 
-\\\\end{{tabular*}}''',
+\\end{{tabular*}}''',
         "LaTeX header table",
     )
 
@@ -229,32 +273,32 @@ def update_latex_file(data, file_path):
         job_name = escape_latex(job.get('name', ''))
         job_url_raw = job.get('url', '')
         job_url = escape_latex(job_url_raw)
-        url_domain = escape_latex(job_url_raw.replace('https://', '').replace('http://', ''))
+        url_domain = escape_latex(job_url_raw.replace('https://', '').replace('http://', '').rstrip('/'))
         position = escape_latex(job.get('position', ''))
         location = escape_latex(job.get('location', ''))
         summary = escape_latex(job.get('summary', ''))
 
-        work_latex += f'''  \\\\resumeSubheading
-      {{{job_name} \\\\href{{{job_url}}}{{{url_domain}}}}}{{{location}}}
+        work_latex += f'''  \\resumeSubheading
+      {{{job_name} \\href{{{job_url}}}{{{url_domain}}}}}{{{location}}}
       {{{position}}}{{{start_date} - {end_date}}}
-      \\\\resumeItemListStart
-        \\\\resumeItemNoTitle
+      \\resumeItemListStart
+        \\resumeItemNoTitle
             {{{summary}}}
 '''
 
         for highlight in job.get('highlights', []):
-            work_latex += f'''        \\\\resumeItemNoTitle
+            work_latex += f'''        \\resumeItemNoTitle
             {{{escape_latex(highlight)}}}
 '''
 
-        work_latex += '''      \\\\resumeItemListEnd
+        work_latex += '''      \\resumeItemListEnd
 '''
 
     # Update the experience section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
         r'\\section\{Experience\}.*?\\resumeSubHeadingListStart(.*?)\\resumeSubHeadingListEnd',
-        f'\\\\section{{Experience}}\n\n\\\\resumeSubHeadingListStart\n{work_latex}\\\\resumeSubHeadingListEnd',
+        f'\\section{{Experience}}\n\n\\resumeSubHeadingListStart\n{work_latex}\\resumeSubHeadingListEnd',
         "LaTeX experience section",
     )
 
@@ -267,19 +311,27 @@ def update_latex_file(data, file_path):
         location = escape_latex(edu.get('location', ''))
         degree = escape_latex(build_degree_text(edu))
 
-        education_latex += f'''    \\\\resumeSubheading
-      {{{institution}}}{{{location}}}
+        edu_url_raw = edu.get('url', '')
+        if edu_url_raw:
+            edu_url = escape_latex(edu_url_raw)
+            url_domain = escape_latex(edu_url_raw.replace('https://', '').replace('http://', '').rstrip('/'))
+            institution_text = f'{institution} \\href{{{edu_url}}}{{{url_domain}}}'
+        else:
+            institution_text = institution
+
+        education_latex += f'''    \\resumeSubheading
+      {{{institution_text}}}{{{location}}}
       {{{degree} }}{{{start_date} -- {end_date}}}
 
-      \\\\resumeItemListStart
+      \\resumeItemListStart
 '''
 
         for course in edu.get('courses', []):
-            education_latex += f'''        \\\\resumeSubItemNoBullet
+            education_latex += f'''        \\resumeSubItemNoBullet
           {{{escape_latex(course)}}}
 '''
 
-        education_latex += '''      \\\\resumeItemListEnd
+        education_latex += '''      \\resumeItemListEnd
 
 '''
 
@@ -287,52 +339,52 @@ def update_latex_file(data, file_path):
     latex_content = replace_section_or_raise(
         latex_content,
         r'\\section\{Education\}.*?\\resumeSubHeadingListStart(.*?)\\resumeSubHeadingListEnd',
-        f'\\\\section{{Education}}\n  \\\\resumeSubHeadingListStart\n{education_latex}  \\\\resumeSubHeadingListEnd',
+        f'\\section{{Education}}\n  \\resumeSubHeadingListStart\n{education_latex}  \\resumeSubHeadingListEnd',
         "LaTeX education section",
     )
 
     # Update skills section
-    skills_latex = " \\\\resumeItemListStart\n"
+    skills_latex = " \\resumeItemListStart\n"
 
     for skill in data.get('skills', []):
         skill_name = escape_latex(skill.get('name'))
         keywords = skill.get('keywords', [])
 
         if skill_name == "Languages":
-            skills_latex += f'''    \\\\resumeItem{{{skill_name}}}{{}}\\\\vspace{{-3pt}}{{
-        \\\\resumeItemListStart
+            skills_latex += f'''    \\resumeItem{{{skill_name}}}{{}}\\vspace{{-3pt}}{{
+        \\resumeItemListStart
 '''
             for language in keywords:
                 parts = language.split("(")
                 if len(parts) > 1:
                     lang_name = escape_latex(parts[0].strip())
                     lang_level = escape_latex(f"({parts[1]}")
-                    skills_latex += f'''            \\\\resumeItem{{{lang_name}}}{{{lang_level}}}
+                    skills_latex += f'''            \\resumeItem{{{lang_name}}}{{{lang_level}}}
 '''
                 else:
-                    skills_latex += f'''            \\\\resumeItem{{{escape_latex(language)}}}{{}}
+                    skills_latex += f'''            \\resumeItem{{{escape_latex(language)}}}{{}}
 '''
 
-            skills_latex += '''        \\\\resumeItemListEnd
+            skills_latex += '''        \\resumeItemListEnd
     }
 '''
         else:
             escaped_keywords = [escape_latex(keyword) for keyword in keywords]
-            skills_latex += f'''    \\\\resumeItem{{{skill_name}}}{{}}\\\\vspace{{-3pt}}{{
-        \\\\resumeItemListStart
-            \\\\resumeItemNoTitle
+            skills_latex += f'''    \\resumeItem{{{skill_name}}}{{}}\\vspace{{-3pt}}{{
+        \\resumeItemListStart
+            \\resumeItemNoTitle
             {{{' | '.join(escaped_keywords)}}}
-        \\\\resumeItemListEnd
+        \\resumeItemListEnd
     }}
 '''
 
-    skills_latex += " \\\\resumeItemListEnd\n"
+    skills_latex += " \\resumeItemListEnd\n"
 
     # Update the skills section in the LaTeX file
     latex_content = replace_section_or_raise(
         latex_content,
         r'\\section\{Skills \\& Competencies\}.*?\\resumeItemListStart(.*?)\\resumeItemListEnd',
-        f'\\\\section{{Skills \\\\& Competencies}}\n{skills_latex}',
+        f'\\section{{Skills \\& Competencies}}\n{skills_latex}',
         "LaTeX skills section",
     )
 

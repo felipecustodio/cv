@@ -242,6 +242,36 @@
             transition: background-color var(--speed-fast) linear, color var(--speed-fast) linear, border-color var(--speed-fast) linear;
         }
 
+        .entry-header {
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .entry-logo {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff;
+            border: 1px solid var(--border-light);
+            border-radius: 4px;
+            padding: 6px;
+        }
+
+        .entry-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .entry-header-text {
+            flex-grow: 1;
+        }
+
         .entry-card:hover,
         .entry-card:focus-within {
             background: var(--muted);
@@ -260,6 +290,16 @@
             font-size: 1.8rem;
             line-height: 1;
             letter-spacing: -0.02em;
+        }
+
+        .company-link {
+            color: inherit;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .company-link:hover {
+            text-decoration: underline;
         }
 
         .entry-role {
@@ -387,9 +427,35 @@
                 <!-- EXPERIENCE:START -->
 
         <article class="entry-card">
-            <h3 class="entry-title">Zyte</h3>
-            <p class="entry-role">Software Engineer (Mid-level, Full-time)</p>
-            <p class="entry-meta">Remote, Ireland | Jul. 2022 - Dec. 2024</p>
+            <div class="entry-header">
+            <div class="entry-logo">
+                <img src="assets/belvo-logo.svg" alt="Belvo logo">
+            </div>
+                <div class="entry-header-text">
+                    <h3 class="entry-title"><a href="https://belvo.com/" target="_blank" rel="noopener" class="company-link">Belvo</a></h3>
+                    <p class="entry-role">Software Engineer (Mid-level, Full-time)</p>
+                    <p class="entry-meta">Remote, Spain | Mar. 2025 - Present</p>
+                </div>
+            </div>
+            <ul class="entry-list">
+                <li>Designed, developed, and maintained backend services in Python for financial, employment, and fiscal data products, taking services from initial design through production.</li>
+                                <li>Built and operated complex data extraction pipelines and scrapers for high-difficulty sources, performing large-scale data processing and analysis to ensure accuracy, reliability, and performance.</li>
+                <li>Implemented and maintained cloud infrastructure using AWS and Terraform, contributing to internal libraries and delivering reliably under tight deadlines in a fast-paced startup environment.</li>
+
+            </ul>
+        </article>
+        
+        <article class="entry-card">
+            <div class="entry-header">
+            <div class="entry-logo">
+                <img src="assets/zyte-favicon.svg" alt="Zyte logo">
+            </div>
+                <div class="entry-header-text">
+                    <h3 class="entry-title"><a href="https://www.zyte.com/" target="_blank" rel="noopener" class="company-link">Zyte</a></h3>
+                    <p class="entry-role">Software Engineer (Mid-level, Full-time)</p>
+                    <p class="entry-meta">Remote, Ireland | Jul. 2022 - Dec. 2024</p>
+                </div>
+            </div>
             <ul class="entry-list">
                 <li>Developed and optimized hundreds of Scrapy spiders across multiple Python projects, improving data extraction performance and reliability.</li>
                                 <li>Led the development of new projects and executed code refactoring, enhancing scalability and reducing technical debt.</li>
@@ -400,9 +466,16 @@
         </article>
         
         <article class="entry-card">
-            <h3 class="entry-title">Birdie</h3>
-            <p class="entry-role">Software Engineer (Junior, Full-time)</p>
-            <p class="entry-meta">Remote, Brazil | Jul. 2021 - Jul. 2022</p>
+            <div class="entry-header">
+            <div class="entry-logo">
+                <img src="assets/birdie-logo.svg" alt="Birdie logo">
+            </div>
+                <div class="entry-header-text">
+                    <h3 class="entry-title"><a href="https://birdie.ai/" target="_blank" rel="noopener" class="company-link">Birdie</a></h3>
+                    <p class="entry-role">Software Engineer (Junior, Full-time)</p>
+                    <p class="entry-meta">Remote, Brazil | Jul. 2021 - Jul. 2022</p>
+                </div>
+            </div>
             <ul class="entry-list">
                 <li>Built and maintained data scraping spiders using Scrapy and Python, extracting information from diverse sources, such as e-commerce platforms and forums.</li>
                                 <li>Implemented distributed crawling architecture, enabling the scraping of millions of pages weekly, boosting performance.</li>
@@ -413,9 +486,16 @@
         </article>
         
         <article class="entry-card">
-            <h3 class="entry-title">Raccoon Marketing Digital</h3>
-            <p class="entry-role">Software Engineer (Internship)</p>
-            <p class="entry-meta">On-site, São Carlos, Brazil | Apr. 2019 - Aug. 2020</p>
+            <div class="entry-header">
+            <div class="entry-logo">
+                <img src="assets/monks-logo.svg" alt="Raccoon Marketing Digital logo">
+            </div>
+                <div class="entry-header-text">
+                    <h3 class="entry-title"><a href="https://www.monks.com/" target="_blank" rel="noopener" class="company-link">Raccoon Marketing Digital</a></h3>
+                    <p class="entry-role">Software Engineer (Internship)</p>
+                    <p class="entry-meta">On-site, São Carlos, Brazil | Apr. 2019 - Aug. 2020</p>
+                </div>
+            </div>
             <ul class="entry-list">
                 <li>Developed data extraction tools for APIs, databases, and web sources, supporting business intelligence and analytics pipelines.</li>
                                 <li>Designed and automated dashboards, spreadsheets, and reports, integrating data from Google BigQuery and Google Sheets for real-time marketing insights.</li>
@@ -437,9 +517,16 @@
                 <!-- EDUCATION:START -->
 
         <article class="entry-card entry-card--education">
-            <h3 class="entry-title">ICMC USP - University of São Paulo</h3>
-            <p class="entry-role">Master in Business Administration</p>
-            <p class="entry-meta">São Carlos, São Paulo, Brazil | Jul. 2024 - Oct. 2025</p>
+            <div class="entry-header">
+            <div class="entry-logo">
+                <img src="assets/logo-usp.svg" alt="ICMC USP - University of São Paulo logo">
+            </div>
+                <div class="entry-header-text">
+                    <h3 class="entry-title"><a href="https://www.icmc.usp.br/en/" target="_blank" rel="noopener" class="company-link">ICMC USP - University of São Paulo</a></h3>
+                    <p class="entry-role">Master in Business Administration</p>
+                    <p class="entry-meta">São Carlos, São Paulo, Brazil | Jul. 2024 - Oct. 2025</p>
+                </div>
+            </div>
             <ul class="entry-list">
                                 <li>MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.</li>
 
@@ -447,9 +534,16 @@
         </article>
         
         <article class="entry-card entry-card--education">
-            <h3 class="entry-title">ICMC USP - University of São Paulo</h3>
-            <p class="entry-role">Bachelor in Computer Science</p>
-            <p class="entry-meta">São Carlos, São Paulo, Brazil | Mar. 2015 - Dec. 2021</p>
+            <div class="entry-header">
+            <div class="entry-logo">
+                <img src="assets/logo-usp.svg" alt="ICMC USP - University of São Paulo logo">
+            </div>
+                <div class="entry-header-text">
+                    <h3 class="entry-title"><a href="https://www.icmc.usp.br/en/" target="_blank" rel="noopener" class="company-link">ICMC USP - University of São Paulo</a></h3>
+                    <p class="entry-role">Bachelor in Computer Science</p>
+                    <p class="entry-meta">São Carlos, São Paulo, Brazil | Mar. 2015 - Dec. 2021</p>
+                </div>
+            </div>
             <ul class="entry-list">
                                 <li>Received a Bachelor&#x27;s Degree from the Instituto de Ciências Matemáticas e de Computação, at the University of São Paulo (ICMC - USP), one of the most important Brazilian institutions in the fields of STEM.</li>
 

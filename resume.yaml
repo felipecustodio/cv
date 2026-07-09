@@ -12,8 +12,19 @@ basics:
       url: https://www.linkedin.com/in/fscustodio
 
 work:
+  - name: Belvo
+    url: https://belvo.com/
+    logo: assets/belvo-logo.svg
+    location: Remote, Spain
+    position: Software Engineer (Mid-level, Full-time)
+    startDate: 2025-03-01
+    summary: Designed, developed, and maintained backend services in Python for financial, employment, and fiscal data products, taking services from initial design through production.
+    highlights:
+      - Built and operated complex data extraction pipelines and scrapers for high-difficulty sources, performing large-scale data processing and analysis to ensure accuracy, reliability, and performance.
+      - Implemented and maintained cloud infrastructure using AWS and Terraform, contributing to internal libraries and delivering reliably under tight deadlines in a fast-paced startup environment.
   - name: Zyte
-    url: https://zyte.com
+    url: https://www.zyte.com/
+    logo: assets/zyte-favicon.svg
     location: Remote, Ireland
     position: Software Engineer (Mid-level, Full-time)
     startDate: 2022-07-01
@@ -24,7 +35,8 @@ work:
       - Collaborated with clients to deliver customized data scraping solutions, adhering to project timelines and requirements.
       - Worked in a remote, multicultural team, using Slack, Jira, and Meet to maintain seamless communication across time zones.
   - name: Birdie
-    url: https://birdie.ai
+    url: https://birdie.ai/
+    logo: assets/birdie-logo.svg
     location: Remote, Brazil
     position: Software Engineer (Junior, Full-time)
     startDate: 2021-07-01
@@ -35,7 +47,8 @@ work:
       - Created real-time dashboards for monitoring scraping activities and data pipeline efficiency.
       - Collaborated with stakeholders to define requirements and deliver data-driven solutions within tight deadlines.
   - name: Raccoon Marketing Digital
-    url: https://raccoon.ag
+    url: https://www.monks.com/
+    logo: assets/monks-logo.svg
     location: On-site, São Carlos, Brazil
     position: Software Engineer (Internship)
     startDate: 2019-04-01
@@ -47,6 +60,8 @@ work:
 
 education:
   - institution: ICMC USP - University of São Paulo
+    url: https://www.icmc.usp.br/en/
+    logo: assets/logo-usp.svg
     location: São Carlos, São Paulo, Brazil
     area: Business Administration
     studyType: Master
@@ -56,6 +71,8 @@ education:
     courses:
       - MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.
   - institution: ICMC USP - University of São Paulo
+    url: https://www.icmc.usp.br/en/
+    logo: assets/logo-usp.svg
     location: São Carlos, São Paulo, Brazil
     area: Computer Science
     studyType: Bachelor
