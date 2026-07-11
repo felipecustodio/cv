@@ -165,7 +165,7 @@
             position: relative;
             border: 0;
             padding: 0.75rem 1rem;
-            background: var(--background);
+            background: transparent;
             color: var(--foreground);
             font-family: var(--font-mono);
             font-size: 0.68rem;
@@ -177,7 +177,7 @@
         }
 
         .theme-toggle:hover,
-        .theme-toggle:focus-visible { background: var(--accent); color: var(--accent-foreground); }
+        .theme-toggle:focus-visible { background: transparent; color: var(--foreground); }
         .theme-toggle:hover .theme-toggle__icon { animation: button-icon-hover 420ms cubic-bezier(.2,.8,.2,1); }
         .theme-toggle:active .theme-toggle__icon { animation: none; transform: rotate(-12deg) scale(.82); }
         .theme-toggle:focus-visible { outline: 3px solid var(--border); outline-offset: 3px; }
