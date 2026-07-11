@@ -8,6 +8,13 @@
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400..700&display=swap">
     <script src="https://unpkg.com/lucide@latest" defer></script>
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem("theme") === "dark") document.documentElement.dataset.theme = "dark";
+            } catch (error) {}
+        }());
+    </script>
     <style>
         :root {
             color-scheme: light;
@@ -24,6 +31,22 @@
             --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
             --speed-fast: 100ms;
             --radius-none: 0;
+            --logo-surface: #FFFFFF;
+            --skills-grid: #00000008;
+        }
+
+        html[data-theme="dark"] {
+            color-scheme: dark;
+            --background: #0D0D0F;
+            --foreground: #F3F0E8;
+            --muted: #17171A;
+            --muted-foreground: #A6A29A;
+            --accent: #F3F0E8;
+            --accent-foreground: #0D0D0F;
+            --border: #F3F0E8;
+            --border-light: #3A3938;
+            --logo-surface: #F3F0E8;
+            --skills-grid: #FFFFFF10;
         }
 
         *, *::before, *::after {
@@ -33,6 +56,7 @@
         html {
             background: var(--background);
             color: var(--foreground);
+            color-scheme: inherit;
         }
 
         body {
@@ -79,9 +103,17 @@
 
         .utility-nav {
             display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
             gap: 0.75rem;
             flex-wrap: wrap;
             margin-bottom: 2rem;
+        }
+
+        .utility-nav__links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
         }
 
         .action-button {
@@ -107,6 +139,33 @@
             background: var(--accent);
             color: var(--accent-foreground);
         }
+
+        .theme-toggle {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            border: 1px solid var(--border);
+            padding: 0.7rem 0.85rem;
+            background: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible { background: var(--accent); color: var(--accent-foreground); }
+        .theme-toggle:focus-visible { outline: 3px solid var(--border); outline-offset: 3px; }
+        .theme-toggle__icon { position: absolute; left: 0.85rem; width: 1.05rem; height: 1.05rem; display: grid; place-items: center; transition: transform 350ms cubic-bezier(.2,.8,.2,1), opacity 220ms ease; }
+        .theme-toggle__icon svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+        .theme-toggle__icon--moon { opacity: 0; transform: rotate(-90deg) scale(.7); }
+        .theme-toggle__label { margin-left: 1.6rem; }
+        html[data-theme="dark"] .theme-toggle__icon--sun { opacity: 0; transform: rotate(90deg) scale(.7); }
+        html[data-theme="dark"] .theme-toggle__icon--moon { opacity: 1; transform: rotate(0) scale(1); }
 
         .action-button:focus-visible,
         .contact-link:focus-visible,
@@ -256,7 +315,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #ffffff;
+            background: var(--logo-surface);
             border: 1px solid var(--border-light);
             border-radius: 4px;
             padding: 6px;
@@ -329,8 +388,8 @@
             border: 1px solid var(--border-light);
             padding: 1.25rem;
             background:
-                linear-gradient(#00000008 1px, transparent 1px),
-                linear-gradient(90deg, #00000008 1px, transparent 1px);
+                linear-gradient(var(--skills-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--skills-grid) 1px, transparent 1px);
             background-size: 40px 40px;
         }
 
@@ -375,14 +434,21 @@
 <body>
     <main class="page-shell">
         <nav class="utility-nav" aria-label="Utility links">
-            <a class="action-button" href="https://felipecustodio.dev" rel="noopener">
-                <span class="button-icon" aria-hidden="true"><i data-lucide="house"></i></span>
-                <span>Home</span>
-            </a>
-            <a class="action-button" href="https://cv.felipecustodio.dev/resume.pdf" download="Felipe_Scrochio_Custodio_CV.pdf">
-                <span class="button-icon" aria-hidden="true"><i data-lucide="download"></i></span>
-                <span>Download PDF</span>
-            </a>
+            <div class="utility-nav__links">
+                <a class="action-button" href="https://felipecustodio.dev" rel="noopener">
+                    <span class="button-icon" aria-hidden="true"><i data-lucide="house"></i></span>
+                    <span>Home</span>
+                </a>
+                <a class="action-button" href="https://cv.felipecustodio.dev/resume.pdf" download="Felipe_Scrochio_Custodio_CV.pdf">
+                    <span class="button-icon" aria-hidden="true"><i data-lucide="download"></i></span>
+                    <span>Download PDF</span>
+                </a>
+            </div>
+            <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+                <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true"><i data-lucide="sun"></i></span>
+                <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true"><i data-lucide="moon"></i></span>
+                <span class="theme-toggle__label">Dark mode</span>
+            </button>
         </nav>
 
         <header class="hero">
@@ -574,6 +640,21 @@
             if (typeof lucide !== "undefined") {
                 lucide.createIcons();
             }
+            var toggle = document.querySelector(".theme-toggle");
+            var root = document.documentElement;
+            if (!toggle) return;
+            function updateTheme() {
+                var isDark = root.dataset.theme === "dark";
+                toggle.setAttribute("aria-pressed", String(isDark));
+                toggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+                toggle.querySelector(".theme-toggle__label").textContent = isDark ? "Light mode" : "Dark mode";
+            }
+            toggle.addEventListener("click", function () {
+                root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+                try { localStorage.setItem("theme", root.dataset.theme); } catch (error) {}
+                updateTheme();
+            });
+            updateTheme();
         });
     </script>
 </body>
