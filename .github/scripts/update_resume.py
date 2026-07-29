@@ -183,9 +183,6 @@ def update_html_file(data, file_path):
             heading_content = f'<a href="{escape_html(edu_url)}" target="_blank" rel="noopener" class="company-link">{edu_name}</a>'
         else:
             heading_content = edu_name
-        english_url = edu.get('englishUrl')
-        if english_url:
-            heading_content += f' <a href="{escape_html(english_url)}" target="_blank" rel="noopener" class="company-link" lang="en" aria-label="{edu_name} website translated to English">[English]</a>'
 
         logo_path = edu.get('logo')
         if logo_path:
@@ -341,13 +338,13 @@ def update_latex_file(data, file_path):
         edu_url_raw = edu.get('url', '')
         if edu_url_raw:
             edu_url = escape_latex(edu_url_raw)
-            url_domain = escape_latex(edu_url_raw.replace('https://', '').replace('http://', '').rstrip('/'))
+            url_domain = escape_latex(
+                edu.get('urlLabel')
+                or edu_url_raw.replace('https://', '').replace('http://', '').rstrip('/')
+            )
             institution_text = f'{institution} \\href{{{edu_url}}}{{{url_domain}}}'
         else:
             institution_text = institution
-        english_url_raw = edu.get('englishUrl', '')
-        if english_url_raw:
-            institution_text += f' \\href{{{escape_latex(english_url_raw)}}}{{[English]}}'
 
         education_latex += f'''    \\resumeSubheading
       {{{institution_text}}}{{{location}}}
