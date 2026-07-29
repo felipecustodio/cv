@@ -46,6 +46,8 @@ Testing uses `unittest`. Add or update tests in `tests/` whenever changing `.git
 - Keep generated artifacts in sync: pull requests should pass `Validate Resume Generation`, which reruns the generator and checks for uncommitted diffs.
 
 ## Commit & Pull Request Guidelines
+Every completed task must be committed immediately as its own atomic commit using the Conventional Commits format. Do not combine unrelated changes in one commit.
+
 Recent history mixes Conventional Commit style and sentence-case summaries. Prefer concise, imperative messages like:
 - `feat: support new resume section`
 - `fix: correct education regex replacement`
