@@ -60,7 +60,8 @@ work:
 
 education:
   - institution: ICMC USP - University of São Paulo
-    url: https://www.icmc.usp.br/en/
+    url: https://mba.iabigdata.icmc.usp.br/
+    englishUrl: "https://mba-iabigdata-icmc-usp-br.translate.goog/?_x_tr_sl=pt&_x_tr_tl=en&_x_tr_hl=en"
     logo: assets/logo-usp.svg
     location: São Carlos, São Paulo, Brazil
     area: Business Administration

@@ -63,6 +63,8 @@ class TestResumeUpdate(unittest.TestCase):
             'education': [
                 {
                     'institution': 'Test University',
+                    'url': 'https://university.example',
+                    'englishUrl': 'https://university-example.translate.goog/?_x_tr_sl=pt&_x_tr_tl=en',
                     'location': 'Test Location',
                     'area': 'Computer Science',
                     'studyType': 'Bachelor',
@@ -225,6 +227,9 @@ class TestResumeUpdate(unittest.TestCase):
         self.assertIn('Test Company', content)
         self.assertIn('Test Position', content)
         self.assertIn('Test University', content)
+        self.assertIn('https://university.example', content)
+        self.assertIn('https://university-example.translate.goog/?_x_tr_sl=pt&amp;_x_tr_tl=en', content)
+        self.assertIn('[English]', content)
         self.assertIn('Test course description', content)
         self.assertIn('English (Native)', content)
         self.assertIn('Python', content)
@@ -254,6 +259,9 @@ class TestResumeUpdate(unittest.TestCase):
         self.assertIn('Test Position', content)
         self.assertIn('Jan. 2020 - Dec. 2022', content)
         self.assertIn('Test University', content)
+        self.assertIn('https://university.example', content)
+        self.assertIn('https://university-example.translate.goog/?\\_x\\_tr\\_sl=pt\\&\\_x\\_tr\\_tl=en', content)
+        self.assertIn('[English]', content)
         self.assertIn('Test course description', content)
 
         # For language-related checks, we need to check either with or without escaping
