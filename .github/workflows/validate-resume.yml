@@ -6,6 +6,8 @@ on:
       - resume.yaml
       - index.html
       - main.tex
+      - pt-br/index.html
+      - pt-br/main.tex
       - .github/scripts/update_resume.py
       - tests/**
       - requirements*.txt
@@ -36,7 +38,7 @@ jobs:
         run: python .github/scripts/update_resume.py
 
       - name: Ensure generated files are committed
-        run: git diff --exit-code -- index.html main.tex
+        run: git diff --exit-code -- index.html main.tex pt-br/index.html pt-br/main.tex
 
       - uses: actions/cache@v3
         name: Tectonic Cache
@@ -50,3 +52,6 @@ jobs:
 
       - name: Compile LaTeX PDF
         run: tectonic main.tex
+
+      - name: Compile Brazilian Portuguese PDF
+        run: cd pt-br && tectonic main.tex

@@ -7,6 +7,8 @@ on:
       - 'resume.yaml'
       - 'index.html'
       - 'main.tex'
+      - 'pt-br/index.html'
+      - 'pt-br/main.tex'
       - '.github/scripts/**'
       - '.github/workflows/update-resume.yml'
       - 'assets/**'
@@ -42,6 +44,6 @@ jobs:
         run: |
           git config --global user.name 'GitHub Actions Bot'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add main.tex index.html
+          git add main.tex index.html pt-br/
           git commit -m "Update resume from YAML" || echo "No changes to commit"
           git push

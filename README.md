@@ -12,7 +12,7 @@ A modern, automated system for maintaining both web and PDF versions of your pro
 
 ## Project Overview
 
-This project uses a single YAML data source to generate both a professional LaTeX PDF resume and an HTML website version. The LaTeX is compiled and rendered automatically via the setup-tectonic GitHub action, and deployed to the web via Vercel, hosted at [cv.felipecustodio.dev](https://cv.felipecustodio.dev).
+This project uses a single YAML data source to generate localized LaTeX PDF resumes and HTML website versions. English is served at the root, while Brazilian Portuguese is served at `/pt-br/`. The LaTeX is compiled and rendered automatically via the setup-tectonic GitHub action, and deployed to the web via Vercel, hosted at [cv.felipecustodio.dev](https://cv.felipecustodio.dev).
 
 The system also supports Overleaf git sync, allowing use of the Overleaf editor while syncing changes to the git repository.
 
@@ -22,6 +22,7 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
 - **Dual Output Formats**:
   - Professional PDF resume (LaTeX)
   - Modern HTML website
+- **Localized Versions**: English and Brazilian Portuguese content, interface strings, dates, PDFs, and web pages are generated from `resume.yaml`
 - **Automated Workflow**:
   - Update resume by simply editing the YAML file
   - Tests automatically run to validate changes
@@ -36,6 +37,7 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
 ├── main.tex            # LaTeX template/output
 ├── resume.yaml         # Source data (edit this file!)
 ├── resume.pdf          # Generated PDF output
+├── pt-br/              # Brazilian Portuguese generated HTML, LaTeX, and PDF
 ├── assets/             # Static assets for website
 └── tests/              # Testing suite
     ├── test_update_resume.py
@@ -73,7 +75,7 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
    ```bash
    python .github/scripts/update_resume.py
    ```
-3. Your updates will be reflected in both `index.html` and `main.tex`
+3. Your updates will be reflected in the generated English and Brazilian Portuguese HTML and LaTeX files
 
 ### Generate PDF Locally
 
@@ -95,13 +97,13 @@ This project uses two main GitHub Actions workflows:
 2. **Update Resume from YAML**:
    - Triggered when `resume.yaml` is changed
    - Runs tests to validate changes
-   - Updates HTML and LaTeX files
+   - Updates HTML and LaTeX files for every locale configured in `resume.yaml`
    - Commits changes back to the repository
 
 3. **Build PDF Resume**:
    - Builds after the update workflow completes successfully
-   - Compiles LaTeX to PDF
-   - Makes PDF available as an artifact
+   - Compiles every localized LaTeX source to its matching PDF
+   - Commits the generated PDFs and makes them available as artifacts
 
 ## Testing
 

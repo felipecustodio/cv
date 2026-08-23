@@ -386,5 +386,30 @@ if __name__ == "__main__":
         self.assertIn("% EDUCATION:START", tex_first)
         self.assertIn("% SKILLS:START", tex_first)
 
+        # Verify that the configured Brazilian Portuguese locale renders from the same templates.
+        pt_dir = os.path.join(self.test_dir, "pt-br")
+        os.makedirs(pt_dir)
+        pt_html = os.path.join(pt_dir, "index.html")
+        pt_tex = os.path.join(pt_dir, "main.tex")
+        with open(actual_html, "r") as f:
+            html_template = f.read()
+        with open(actual_tex, "r") as f:
+            tex_template = f.read()
+
+        prod_module.update_html_file(data, pt_html, "pt-BR", "../", html_template)
+        prod_module.update_latex_file(data, pt_tex, "pt-BR", tex_template)
+
+        with open(pt_html, "r") as f:
+            pt_html_content = f.read()
+        with open(pt_tex, "r") as f:
+            pt_tex_content = f.read()
+
+        self.assertIn('lang="pt-BR"', pt_html_content)
+        self.assertIn("Experi", pt_html_content)
+        self.assertIn('href="resume.pdf"', pt_html_content)
+        self.assertIn('src="../assets/belvo-logo.svg"', pt_html_content)
+        self.assertIn(r"\section{Experi", pt_tex_content)
+        self.assertIn("Presente", pt_tex_content)
+
 if __name__ == '__main__':
     unittest.main()
