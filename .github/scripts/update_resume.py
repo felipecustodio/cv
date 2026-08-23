@@ -253,12 +253,12 @@ def update_html_file(data, file_path, locale="en", asset_prefix="", template_con
         html_content,
         count=1,
     )
-    html_content = replace_marker(
+    html_content = re.sub(
+        r"<title>.*?</title>",
+        f"<title>{escape_html(basics.get('name', ''))} - {escape_html(strings['pageTitle'])}</title>",
         html_content,
-        "<!-- UI:PAGE_TITLE:START -->",
-        "<!-- UI:PAGE_TITLE:END -->",
-        f"{escape_html(basics.get('name', ''))} - {escape_html(strings['pageTitle'])}",
-        "HTML page title",
+        count=1,
+        flags=re.DOTALL,
     )
     html_content = replace_attribute(html_content, r'<nav class="utility-nav"', "aria-label", strings["utilityNavigation"])
     html_content = replace_attribute(html_content, r'<button class="theme-toggle"', "aria-label", strings["switchToDarkMode"])

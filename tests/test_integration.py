@@ -405,6 +405,9 @@ if __name__ == "__main__":
             pt_tex_content = f.read()
 
         self.assertIn('lang="pt-BR"', pt_html_content)
+        self.assertIn("<title>Felipe Scrochio Cust", pt_html_content)
+        self.assertIn("- CV</title>", pt_html_content)
+        self.assertNotIn("UI:PAGE_TITLE", pt_html_content)
         self.assertIn("Experi", pt_html_content)
         self.assertIn('href="resume.pdf"', pt_html_content)
         self.assertIn('src="../assets/belvo-logo.svg"', pt_html_content)
