@@ -339,6 +339,26 @@ class TestResumeUpdate(unittest.TestCase):
         self.assertIn("Master of Science in AI", html_content)
         self.assertIn("Master of Science in AI", tex_content)
 
+    def test_education_with_only_completion_date(self):
+        """Education can show one date in both locales and output formats."""
+        education = self.yaml_data["education"][0]
+        del education["startDate"]
+        education["endDate"] = "2026-10-01"
+
+        for locale, expected in (("en", "Oct. 2026"), ("pt-BR", "out. 2026")):
+            update_html_file(self.yaml_data, self.html_path, locale)
+            update_latex_file(self.yaml_data, self.tex_path, locale)
+
+            with open(self.html_path, "r") as f:
+                html_content = f.read()
+            with open(self.tex_path, "r") as f:
+                tex_content = f.read()
+
+            self.assertIn(f"Test Location | {expected}", html_content)
+            self.assertIn(f"{{{expected}}}", tex_content)
+            self.assertNotIn(f"Present - {expected}", html_content)
+            self.assertNotIn(f"Present -- {expected}", tex_content)
+
     def test_empty_yaml_data(self):
         """Test handling of empty YAML data."""
         empty_yaml_path = os.path.join(self.test_dir, 'empty.yaml')

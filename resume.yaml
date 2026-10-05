@@ -171,8 +171,7 @@ education:
     degree:
       en: Master in Business Administration
       pt-BR: MBA em Administração de Empresas
-    startDate: 2024-07-01
-    endDate: 2025-10-01
+    endDate: 2026-10-01
     courses:
       en:
         - MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.

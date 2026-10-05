@@ -29,7 +29,7 @@ HTML_EDUCATION_TEMPLATE = '''
                 <div class="entry-header-text">
                     <h3 class="entry-title">{heading_content}</h3>
                     <p class="entry-role">{degree_type}</p>
-                    <p class="entry-meta">{location} | {start_date} - {end_date}</p>
+                    <p class="entry-meta">{location} | {dates}</p>
                 </div>
             </div>
             <ul class="entry-list">
@@ -229,6 +229,14 @@ def format_date(date_str, locale="en"):
         return f"{months[date_obj.month - 1]} {date_obj.year}"
     return date_obj.strftime("%b. %Y")
 
+
+def format_education_dates(education_item, locale="en", separator=" - "):
+    """Show a date range, or just the completion date when no start is given."""
+    end_date = format_date(education_item.get('endDate'), locale)
+    start_date = education_item.get('startDate')
+    return f"{format_date(start_date, locale)}{separator}{end_date}" if start_date else end_date
+
+
 def load_yaml_data(file_path):
     """Load data from resume.yaml file"""
     with open(file_path, 'r') as file:
@@ -363,8 +371,7 @@ def update_html_file(data, file_path, locale="en", asset_prefix="", template_con
     # Update education section
     education_html = ""
     for edu in localized_data.get('education', []):
-        start_date = escape_html(format_date(edu.get('startDate'), locale))
-        end_date = escape_html(format_date(edu.get('endDate'), locale))
+        dates = escape_html(format_education_dates(edu, locale))
 
         courses_html = ""
         for course in edu.get('courses', []):
@@ -395,8 +402,7 @@ def update_html_file(data, file_path, locale="en", asset_prefix="", template_con
             heading_content=heading_content,
             degree_type=degree_type,
             location=escape_html(edu.get('location', '')),
-            start_date=start_date,
-            end_date=end_date,
+            dates=dates,
             courses_html=courses_html
         )
 
@@ -532,8 +538,7 @@ def update_latex_file(data, file_path, locale="en", template_content=None):
     # Update education section
     education_latex = ""
     for edu in localized_data.get('education', []):
-        start_date = format_date(edu.get('startDate'), locale)
-        end_date = format_date(edu.get('endDate'), locale)
+        dates = escape_latex(format_education_dates(edu, locale, " -- "))
         institution = escape_latex(edu.get('institution', ''))
         location = escape_latex(edu.get('location', ''))
         degree = escape_latex(build_degree_text(edu))
@@ -551,7 +556,7 @@ def update_latex_file(data, file_path, locale="en", template_content=None):
 
         education_latex += f'''    \\resumeSubheading
       {{{institution_text}}}{{{location}}}
-      {{{degree} }}{{{start_date} -- {end_date}}}
+      {{{degree} }}{{{dates}}}
 
       \\resumeItemListStart
 '''
