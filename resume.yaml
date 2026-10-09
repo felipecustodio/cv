@@ -152,27 +152,22 @@ education:
   - institution:
       en: ICMC USP - University of São Paulo
       pt-BR: ICMC USP - Universidade de São Paulo
-    url: "https://mba-iabigdata-icmc-usp-br.translate.goog/?_x_tr_sl=pt&_x_tr_tl=en&_x_tr_hl=en"
+    url: https://mba.iabigdata.icmc.usp.br/
     urlLabel: mba.iabigdata.icmc.usp.br
     logo: assets/logo-usp.svg
     location:
       en: São Carlos, São Paulo, Brazil
       pt-BR: São Carlos, São Paulo, Brasil
     area:
-      en: Business Administration
-      pt-BR: Administração de Empresas
+      en: Artificial Intelligence and Big Data
+      pt-BR: Inteligência Artificial e Big Data
     studyType:
-      en: Master
+      en: MBA
       pt-BR: MBA
     degree:
-      en: Master in Business Administration
-      pt-BR: MBA em Administração de Empresas
+      en: MBA in Artificial Intelligence and Big Data
+      pt-BR: MBA em Inteligência Artificial e Big Data
     endDate: 2026-10-01
-    courses:
-      en:
-        - MBA in topics of Advanced AI and Big Data, focused on current methodologies in AI, data storage, and processing with practical implementation exercises.
-      pt-BR:
-        - MBA em temas de IA avançada e Big Data, com foco em metodologias atuais de IA, armazenamento e processamento de dados, além de exercícios práticos de implementação.
   - institution:
       en: ICMC USP - University of São Paulo
       pt-BR: ICMC USP - Universidade de São Paulo
