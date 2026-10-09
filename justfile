@@ -22,8 +22,7 @@ pdf:
 check: generate test
 
 verify: check pdf
-    {{python}} .github/scripts/verify_resume_pdf.py --source resume.yaml --pdf en=main.pdf --pdf pt-BR=pt-br/main.pdf
-    {{python}} .github/scripts/verify_resume_pdf.py --source resume.yaml --pdf en=resume.pdf --pdf pt-BR=pt-br/resume.pdf
+    {{python}} .github/scripts/verify_resume_pdf.py --source resume.yaml --pdf en=main.pdf --pdf pt-BR=pt-br/main.pdf --published en=resume.pdf --published pt-BR=pt-br/resume.pdf
 
 preview port="4173":
     {{python}} -m http.server {{port}} --bind 127.0.0.1

@@ -76,11 +76,17 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
 
 ### Generate and verify the PDFs
 
-Run `just verify`. This command generates the source files, runs the tests, and compiles both PDFs.
-It also checks that each PDF has one page and that its extractable text contains the localized YAML content.
-The PDF compiler writes `main.pdf` and `pt-br/main.pdf`. The release workflow publishes them as `resume.pdf` in each locale.
+After an edit, run `just generate` and `just pdf`. Copy the generated PDFs to the published paths:
 
-This check is not an ATS scan. It does not upload the resume or predict how a hiring system parses it.
+```bash
+cp main.pdf resume.pdf
+cp pt-br/main.pdf pt-br/resume.pdf
+```
+
+Run `just verify`. It regenerates the source files, runs tests, and compiles both PDFs.
+It checks that each compiled and published PDF has one page and contains extractable localized YAML fields.
+It also compares the text and layout of each published PDF with its compiled source.
+This local check is not an ATS scan. It does not upload the resume or predict how a hiring system parses it.
 
 ## GitHub Actions Workflow
 

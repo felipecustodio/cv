@@ -1,4 +1,5 @@
 import subprocess
+import shutil
 import sys
 import tempfile
 import unittest
@@ -17,6 +18,7 @@ class VerifyResumePdfTests(unittest.TestCase):
         self.addCleanup(self.temp_dir.cleanup)
         self.source = Path(self.temp_dir.name) / "resume.yaml"
         self.pdf = Path(self.temp_dir.name) / "resume.pdf"
+        self.published = Path(self.temp_dir.name) / "published.pdf"
         self.source.write_text(yaml.safe_dump({
             "site": {"locales": {"en": {"directory": "."}}},
             "basics": {
@@ -36,6 +38,7 @@ class VerifyResumePdfTests(unittest.TestCase):
             }],
             "education": [{
                 "institution": {"en": "Example University"},
+                "location": {"en": "Example City"},
                 "degree": {"en": "Bachelor of Science"},
                 "endDate": "2021-12-01",
                 "courses": {"en": ["Distributed systems"]},
@@ -46,7 +49,8 @@ class VerifyResumePdfTests(unittest.TestCase):
             ],
         }), encoding="utf-8")
 
-    def write_pdf(self, *, include_result=True, pages=1):
+    def write_pdf(self, *, include_result=True, include_education_location=True,
+                  pages=1, published_font_size=None):
         text = [
             "Example Engineer", "Software Engineer", "example@example.org", "example",
             "Example Company", "Backend Engineer", "Remote", "Jan. 2022", "Feb. 2024",
@@ -54,8 +58,10 @@ class VerifyResumePdfTests(unittest.TestCase):
         ]
         if include_result:
             text.append("Reduced failed billing jobs.")
+        text.extend(["Example University", "Bachelor of Science", "Dec. 2021"])
+        if include_education_location:
+            text.append("Example City")
         text.extend([
-            "Example University", "Bachelor of Science", "Dec. 2021",
             "Distributed systems", "Languages", "English (Native)",
             "Skills and Tools", "Python", "SQL",
         ])
@@ -65,11 +71,19 @@ class VerifyResumePdfTests(unittest.TestCase):
             document.new_page()
         document.save(self.pdf)
         document.close()
+        if published_font_size is None:
+            shutil.copyfile(self.pdf, self.published)
+        else:
+            published = pymupdf.open()
+            published.new_page().insert_text((40, 50), "\n".join(text),
+                                             fontsize=published_font_size)
+            published.save(self.published)
+            published.close()
 
     def verify(self):
         return subprocess.run(
             [sys.executable, str(SCRIPT), "--source", str(self.source),
-             "--pdf", f"en={self.pdf}"],
+             "--pdf", f"en={self.pdf}", "--published", f"en={self.published}"],
             capture_output=True, text=True, check=False,
         )
 
@@ -89,6 +103,29 @@ class VerifyResumePdfTests(unittest.TestCase):
         result = self.verify()
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("one page", result.stderr)
+
+    def test_missing_education_location_fails(self):
+        self.write_pdf(include_education_location=False)
+        result = self.verify()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Example City", result.stderr)
+
+    def test_stale_published_text_fails(self):
+        self.write_pdf()
+        with pymupdf.open(self.published) as document:
+            document[0].insert_text((40, 500), "Obsolete achievement")
+            stale = Path(self.temp_dir.name) / "stale.pdf"
+            document.save(stale)
+        self.published = stale
+        result = self.verify()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("differs", result.stderr)
+
+    def test_stale_published_layout_fails(self):
+        self.write_pdf(published_font_size=9)
+        result = self.verify()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("differs", result.stderr)
 
 
 if __name__ == "__main__":
