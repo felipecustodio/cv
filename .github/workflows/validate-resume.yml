@@ -8,10 +8,14 @@ on:
       - main.tex
       - pt-br/index.html
       - pt-br/main.tex
+      - resume.pdf
+      - pt-br/resume.pdf
       - .github/scripts/update_resume.py
       - tests/**
+      - .github/scripts/verify_resume_pdf.py
       - requirements*.txt
       - assets/**
+      - justfile
       - .github/workflows/validate-resume.yml
 
 jobs:
@@ -26,19 +30,10 @@ jobs:
         with:
           python-version: "3.10"
 
+      - uses: extractions/setup-just@v4
+
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
-
-      - name: Run tests
-        run: python -m unittest discover tests/
-
-      - name: Regenerate resume outputs
-        run: python .github/scripts/update_resume.py
-
-      - name: Ensure generated files are committed
-        run: git diff --exit-code -- index.html main.tex pt-br/index.html pt-br/main.tex
+        run: just install
 
       - uses: actions/cache@v3
         name: Tectonic Cache
@@ -50,8 +45,9 @@ jobs:
 
       - uses: wtfjoke/setup-tectonic@v3
 
-      - name: Compile LaTeX PDF
-        run: tectonic main.tex
+      - name: Verify generated resumes
+        run: just verify
 
-      - name: Compile Brazilian Portuguese PDF
-        run: cd pt-br && tectonic main.tex
+      - name: Ensure generated files are committed
+        run: git diff --exit-code -- index.html main.tex pt-br/index.html pt-br/main.tex
+

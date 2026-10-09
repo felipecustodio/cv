@@ -42,15 +42,16 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
 └── tests/              # Testing suite
     ├── test_update_resume.py
     ├── test_integration.py
-    └── test_regex_patterns.py
+    ├── test_regex_patterns.py
+    └── test_verify_resume_pdf.py
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python 3.6+
-- LaTeX environment (for local PDF generation)
+- Python 3.10 or newer
+- Tectonic and just
 - Git
 
 ### Installation
@@ -61,38 +62,34 @@ The system also supports Overleaf git sync, allowing use of the Overleaf editor 
    cd cv
    ```
 
-2. Install Python dependencies:
+2. Create the virtual environment and install the dependencies:
    ```bash
-   pip install -r requirements-dev.txt
+   just install
    ```
 
 ## Usage
 
-### Update Your Resume
+### Update the resume
 
-1. Edit the `resume.yaml` file with updated information
-2. Run the update script:
-   ```bash
-   python .github/scripts/update_resume.py
-   ```
-3. Your updates will be reflected in the generated English and Brazilian Portuguese HTML and LaTeX files
+1. Edit `resume.yaml`.
+2. Run `just generate` to update both HTML files and both LaTeX files.
 
-### Generate PDF Locally
+### Generate and verify the PDFs
 
-To generate the PDF locally:
+Run `just verify`. This command generates the source files, runs the tests, and compiles both PDFs.
+It also checks that each PDF has one page and that its extractable text contains the localized YAML content.
+The PDF compiler writes `main.pdf` and `pt-br/main.pdf`. The release workflow publishes them as `resume.pdf` in each locale.
 
-```bash
-tectonic main.tex
-```
+This check is not an ATS scan. It does not upload the resume or predict how a hiring system parses it.
 
 ## GitHub Actions Workflow
 
 This project uses two main GitHub Actions workflows:
 
 1. **Validate Resume Generation**:
-   - Triggered on pull requests that affect resume sources, templates, generator, or tests
-   - Runs tests and regeneration checks
-   - Fails if generated `index.html` and `main.tex` are out of sync with committed files
+   - Runs `just verify` for pull requests that change the resume or its build files
+   - Fails if either PDF has more than one page or omits extractable YAML content
+   - Fails if generated HTML or LaTeX differs from the committed files
 
 2. **Update Resume from YAML**:
    - Triggered when `resume.yaml` is changed
@@ -107,11 +104,7 @@ This project uses two main GitHub Actions workflows:
 
 ## Testing
 
-Run all tests:
-
-```bash
-python -m unittest discover tests/
-```
+Run `just test` for the unit tests. Run `just verify` for the complete generation and PDF check.
 
 ## Deployment
 
