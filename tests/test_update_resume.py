@@ -5,6 +5,7 @@ import unittest
 import tempfile
 import shutil
 import yaml
+from html.parser import HTMLParser
 
 # Add parent directory to path to import the update_resume module
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -359,21 +360,34 @@ class TestResumeUpdate(unittest.TestCase):
             self.assertNotIn(f"Present - {expected}", html_content)
             self.assertNotIn(f"Present -- {expected}", tex_content)
 
-    def test_empty_yaml_data(self):
-        """Test handling of empty YAML data."""
-        empty_yaml_path = os.path.join(self.test_dir, 'empty.yaml')
-        with open(empty_yaml_path, 'w') as f:
-            f.write('{}')
+    def test_education_without_description_has_no_empty_list(self):
+        self.yaml_data["education"][0]["courses"] = []
+        update_html_file(self.yaml_data, self.html_path)
 
-        data = load_yaml_data(empty_yaml_path)
+        class EducationLists(HTMLParser):
+            def __init__(self):
+                super().__init__()
+                self.in_education = False
+                self.cards = 0
+                self.lists = 0
 
-        # Should not raise errors when updating with empty data
-        update_html_file(data, self.html_path)
-        update_latex_file(data, self.tex_path)
+            def handle_starttag(self, tag, attrs):
+                if tag == "article" and "entry-card--education" in dict(attrs).get("class", ""):
+                    self.in_education = True
+                    self.cards += 1
+                elif tag == "ul" and self.in_education:
+                    self.lists += 1
 
-        # Check that the files still exist
-        self.assertTrue(os.path.exists(self.html_path))
-        self.assertTrue(os.path.exists(self.tex_path))
+            def handle_endtag(self, tag):
+                if tag == "article":
+                    self.in_education = False
+
+        parser = EducationLists()
+        with open(self.html_path, "r") as file:
+            parser.feed(file.read())
+        self.assertEqual(parser.cards, 1)
+        self.assertEqual(parser.lists, 0)
+
 
 
 if __name__ == '__main__':

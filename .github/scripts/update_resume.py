@@ -32,9 +32,7 @@ HTML_EDUCATION_TEMPLATE = '''
                     <p class="entry-meta">{location} | {dates}</p>
                 </div>
             </div>
-            <ul class="entry-list">
-                {courses_html}
-            </ul>
+            {courses_html}
         </article>
 '''
 
@@ -376,6 +374,8 @@ def update_html_file(data, file_path, locale="en", asset_prefix="", template_con
         courses_html = ""
         for course in edu.get('courses', []):
             courses_html += f'                <li>{escape_html(course)}</li>\n'
+        if courses_html:
+            courses_html = f'<ul class="entry-list">\n{courses_html}            </ul>'
 
         degree_type = escape_html(build_degree_text(edu))
 
@@ -557,18 +557,15 @@ def update_latex_file(data, file_path, locale="en", template_content=None):
         education_latex += f'''    \\resumeSubheading
       {{{institution_text}}}{{{location}}}
       {{{degree} }}{{{dates}}}
-
-      \\resumeItemListStart
 '''
-
-        for course in edu.get('courses', []):
-            education_latex += f'''        \\resumeSubItemNoBullet
+        if edu.get('courses'):
+            education_latex += '      \\resumeItemListStart\n'
+            for course in edu['courses']:
+                education_latex += f'''        \\resumeSubItemNoBullet
           {{{escape_latex(course)}}}
 '''
-
-        education_latex += '''      \\resumeItemListEnd
-
-'''
+            education_latex += '      \\resumeItemListEnd\n'
+        education_latex += '\n'
 
     # Update the education section in the LaTeX file
     latex_content = replace_section_or_raise(
@@ -582,36 +579,9 @@ def update_latex_file(data, file_path, locale="en", template_content=None):
     skills_latex = "\\resumeItemListStart\n"
 
     for skill in localized_data.get('skills', []):
-        skill_name = escape_latex(skill.get('name'))
-        keywords = skill.get('keywords', [])
-
-        if skill.get("_is_languages"):
-            skills_latex += f'''    \\resumeItem{{{skill_name}}}{{}}\\vspace{{-3pt}}{{
-        \\resumeItemListStart
-'''
-            for language in keywords:
-                parts = language.split("(")
-                if len(parts) > 1:
-                    lang_name = escape_latex(parts[0].strip())
-                    lang_level = escape_latex(f"({parts[1]}")
-                    skills_latex += f'''            \\resumeItem{{{lang_name}}}{{{lang_level}}}
-'''
-                else:
-                    skills_latex += f'''            \\resumeItem{{{escape_latex(language)}}}{{}}
-'''
-
-            skills_latex += '''        \\resumeItemListEnd
-    }
-'''
-        else:
-            escaped_keywords = [escape_latex(keyword) for keyword in keywords]
-            skills_latex += f'''    \\resumeItem{{{skill_name}}}{{}}\\vspace{{-3pt}}{{
-        \\resumeItemListStart
-            \\resumeItemNoTitle
-            {{{' | '.join(escaped_keywords)}}}
-        \\resumeItemListEnd
-    }}
-'''
+        skill_name = escape_latex(skill.get('name', ''))
+        keywords = ' | '.join(escape_latex(keyword) for keyword in skill.get('keywords', []))
+        skills_latex += f"    \\resumeItemNoTitle{{\\textbf{{{skill_name}:}} {keywords}}}\n"
 
     skills_latex += "  \\resumeItemListEnd"
 

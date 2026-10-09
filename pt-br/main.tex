@@ -12,7 +12,8 @@
 \usepackage{fancyhdr}
 \usepackage[english]{babel}
 \usepackage{tabularx}
-\usepackage{tgpagella}
+\usepackage{fontspec}
+\setmainfont{lmroman10-regular.otf}[BoldFont=lmroman10-bold.otf,ItalicFont=lmroman10-italic.otf,BoldItalicFont=lmroman10-bolditalic.otf,Ligatures=NoCommon]
 
 % Choose a font
 
@@ -22,8 +23,6 @@
 % \usepackage[familydefault,regular]{Chivo}
 % \usepackage[T1]{fontenc}
 
-\usepackage[T1]{fontenc}
-\usepackage{accanthis}
 
 % \usepackage[T1]{fontenc}
 % \usepackage[light]{antpolt}
@@ -149,7 +148,7 @@
   \resumeSubHeadingListStart
   \resumeSubheading
       {Belvo \href{https://belvo.com/}{belvo.com}}{Remoto, Espanha}
-      {Engenheiro de Software (Pleno, Tempo integral)}{mar. 2025 - Presente}
+      {Engenheiro de Software (Pleno)}{mar. 2025 - Presente}
       \resumeItemListStart
         \resumeItemNoTitle
             {Projetei, desenvolvi e mantive serviços backend em Python para produtos de dados financeiros, trabalhistas e fiscais, levando os serviços do desenho inicial à produção.}
@@ -160,38 +159,34 @@
       \resumeItemListEnd
   \resumeSubheading
       {Zyte \href{https://www.zyte.com/}{www.zyte.com}}{Remoto, Irlanda}
-      {Engenheiro de Software (Pleno, Tempo integral)}{jul. 2022 - dez. 2024}
+      {Engenheiro de Software (Pleno)}{jul. 2022 - dez. 2024}
       \resumeItemListStart
         \resumeItemNoTitle
-            {Desenvolvi e otimizei centenas de spiders Scrapy em diversos projetos Python, melhorando o desempenho e a confiabilidade da extração de dados.}
+            {Desenvolvi e otimizei centenas de spiders Scrapy em projetos Python.}
         \resumeItemNoTitle
             {Liderei o desenvolvimento de novos projetos e realizei refatorações, aumentando a escalabilidade e reduzindo a dívida técnica.}
         \resumeItemNoTitle
             {Colaborei com clientes para entregar soluções personalizadas de raspagem de dados, respeitando prazos e requisitos dos projetos.}
-        \resumeItemNoTitle
-            {Trabalhei em uma equipe remota e multicultural, usando Slack, Jira e Meet para manter uma comunicação fluida entre fusos horários.}
       \resumeItemListEnd
   \resumeSubheading
       {Birdie \href{https://birdie.ai/}{birdie.ai}}{Remoto, Brasil}
-      {Engenheiro de Software (Júnior, Tempo integral)}{jul. 2021 - jul. 2022}
+      {Engenheiro de Software (Júnior)}{jul. 2021 - jul. 2022}
       \resumeItemListStart
         \resumeItemNoTitle
-            {Construí e mantive spiders de raspagem de dados com Scrapy e Python, extraindo informações de fontes diversas, como plataformas de e-commerce e fóruns.}
+            {Construí e mantive spiders Scrapy em Python para extrair dados de lojas virtuais e fóruns.}
         \resumeItemNoTitle
             {Implementei uma arquitetura distribuída de crawling, permitindo raspar milhões de páginas por semana e aumentando o desempenho.}
         \resumeItemNoTitle
             {Criei dashboards em tempo real para monitorar atividades de raspagem e a eficiência dos pipelines de dados.}
-        \resumeItemNoTitle
-            {Colaborei com stakeholders para definir requisitos e entregar soluções orientadas por dados em prazos apertados.}
       \resumeItemListEnd
   \resumeSubheading
       {Raccoon Marketing Digital \href{https://www.monks.com/}{www.monks.com}}{Presencial, São Carlos, Brasil}
       {Engenheiro de Software (Estágio)}{abr. 2019 - ago. 2020}
       \resumeItemListStart
         \resumeItemNoTitle
-            {Desenvolvi ferramentas de extração de dados para APIs, bancos de dados e fontes web, apoiando pipelines de business intelligence e analytics.}
+            {Desenvolvi ferramentas para extrair dados de APIs, bancos de dados e sites para pipelines de análise.}
         \resumeItemNoTitle
-            {Projetei e automatizei dashboards, planilhas e relatórios, integrando dados do Google BigQuery e Google Sheets para gerar insights de marketing em tempo real.}
+            {Automatizei dashboards, planilhas e relatórios com BigQuery e Google Sheets para análise de marketing.}
         \resumeItemNoTitle
             {Construí ferramentas de governança de dados, reduzindo custos de manutenção e melhorando a qualidade dos dados nos pipelines.}
       \resumeItemListEnd
@@ -207,7 +202,6 @@
     \resumeSubheading
       {ICMC USP - Universidade de São Paulo \href{https://mba-iabigdata-icmc-usp-br.translate.goog/?\_x\_tr\_sl=pt\&\_x\_tr\_tl=en\&\_x\_tr\_hl=en}{mba.iabigdata.icmc.usp.br}}{São Carlos, São Paulo, Brasil}
       {MBA em Administração de Empresas }{out. 2026}
-
       \resumeItemListStart
         \resumeSubItemNoBullet
           {MBA em temas de IA avançada e Big Data, com foco em metodologias atuais de IA, armazenamento e processamento de dados, além de exercícios práticos de implementação.}
@@ -216,11 +210,6 @@
     \resumeSubheading
       {ICMC USP - Universidade de São Paulo \href{https://www.icmc.usp.br/en/}{www.icmc.usp.br/en}}{São Carlos, São Paulo, Brasil}
       {Bacharelado em Ciência da Computação }{dez. 2021}
-
-      \resumeItemListStart
-        \resumeSubItemNoBullet
-          {Graduação pelo Instituto de Ciências Matemáticas e de Computação da Universidade de São Paulo (ICMC - USP), uma das instituições brasileiras mais importantes nas áreas de STEM.}
-      \resumeItemListEnd
 
   \resumeSubHeadingListEnd
   % EDUCATION:END
@@ -246,18 +235,8 @@
 % UI:SKILLS:END
   % SKILLS:START
   \resumeItemListStart
-    \resumeItem{Idiomas}{}\vspace{-3pt}{
-        \resumeItemListStart
-            \resumeItem{Português}{(Nativo)}
-            \resumeItem{Inglês}{(Proficiência profissional completa)}
-        \resumeItemListEnd
-    }
-    \resumeItem{Competências e ferramentas}{}\vspace{-3pt}{
-        \resumeItemListStart
-            \resumeItemNoTitle
-            {Python | SQL | Git | Linux | Google Cloud Platform (BigQuery, Cloud Functions, Storage, App Engine) | AWS (Firehose, Athena, S3) | Microsoft Azure (AKS, VMs, Functions) | Raspagem web (Scrapy, Puppeteer, Selenium) | DevOps, infraestrutura (Docker, Kubernetes, Terraform) | CI/CD (ArgoCD, Gitlab) | Mensageria e cache (Redis) | Frameworks web (FastAPI, Flask) | Monitoramento (Grafana, InfluxDB, Loki) | Testes (Pytest, testes unitários)}
-        \resumeItemListEnd
-    }
+    \resumeItemNoTitle{\textbf{Idiomas:} Português (Nativo) | Inglês (Proficiência profissional completa)}
+    \resumeItemNoTitle{\textbf{Competências e ferramentas:} Python | SQL | Git | Linux | Google Cloud Platform (BigQuery, Cloud Functions, Storage, App Engine) | AWS (Firehose, Athena, S3) | Microsoft Azure (AKS, VMs, Functions) | Raspagem web (Scrapy, Puppeteer, Selenium) | DevOps, infraestrutura (Docker, Kubernetes, Terraform) | CI/CD (ArgoCD, Gitlab) | Mensageria e cache (Redis) | Frameworks web (FastAPI, Flask) | Monitoramento (Grafana, InfluxDB, Loki) | Testes (Pytest, testes unitários)}
   \resumeItemListEnd
   % SKILLS:END
 

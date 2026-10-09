@@ -71,8 +71,8 @@ work:
       en: Remote, Spain
       pt-BR: Remoto, Espanha
     position:
-      en: Software Engineer (Mid-level, Full-time)
-      pt-BR: Engenheiro de Software (Pleno, Tempo integral)
+      en: Software Engineer (Mid-level)
+      pt-BR: Engenheiro de Software (Pleno)
     startDate: 2025-03-01
     summary:
       en: Designed, developed, and maintained backend services in Python for financial, employment, and fiscal data products, taking services from initial design through production.
@@ -91,22 +91,20 @@ work:
       en: Remote, Ireland
       pt-BR: Remoto, Irlanda
     position:
-      en: Software Engineer (Mid-level, Full-time)
-      pt-BR: Engenheiro de Software (Pleno, Tempo integral)
+      en: Software Engineer (Mid-level)
+      pt-BR: Engenheiro de Software (Pleno)
     startDate: 2022-07-01
     endDate: 2024-12-01
     summary:
-      en: Developed and optimized hundreds of Scrapy spiders across multiple Python projects, improving data extraction performance and reliability.
-      pt-BR: Desenvolvi e otimizei centenas de spiders Scrapy em diversos projetos Python, melhorando o desempenho e a confiabilidade da extração de dados.
+      en: Developed and optimized hundreds of Scrapy spiders across Python projects.
+      pt-BR: Desenvolvi e otimizei centenas de spiders Scrapy em projetos Python.
     highlights:
       en:
         - Led the development of new projects and executed code refactoring, enhancing scalability and reducing technical debt.
         - Collaborated with clients to deliver customized data scraping solutions, adhering to project timelines and requirements.
-        - Worked in a remote, multicultural team, using Slack, Jira, and Meet to maintain seamless communication across time zones.
       pt-BR:
         - Liderei o desenvolvimento de novos projetos e realizei refatorações, aumentando a escalabilidade e reduzindo a dívida técnica.
         - Colaborei com clientes para entregar soluções personalizadas de raspagem de dados, respeitando prazos e requisitos dos projetos.
-        - Trabalhei em uma equipe remota e multicultural, usando Slack, Jira e Meet para manter uma comunicação fluida entre fusos horários.
   - name: Birdie
     url: https://birdie.ai/
     logo: assets/birdie-logo.svg
@@ -114,22 +112,20 @@ work:
       en: Remote, Brazil
       pt-BR: Remoto, Brasil
     position:
-      en: Software Engineer (Junior, Full-time)
-      pt-BR: Engenheiro de Software (Júnior, Tempo integral)
+      en: Software Engineer (Junior)
+      pt-BR: Engenheiro de Software (Júnior)
     startDate: 2021-07-01
     endDate: 2022-07-01
     summary:
-      en: Built and maintained data scraping spiders using Scrapy and Python, extracting information from diverse sources, such as e-commerce platforms and forums.
-      pt-BR: Construí e mantive spiders de raspagem de dados com Scrapy e Python, extraindo informações de fontes diversas, como plataformas de e-commerce e fóruns.
+      en: Built and maintained Scrapy spiders in Python to extract data from online stores and forums.
+      pt-BR: Construí e mantive spiders Scrapy em Python para extrair dados de lojas virtuais e fóruns.
     highlights:
       en:
         - Implemented distributed crawling architecture, enabling the scraping of millions of pages weekly, boosting performance.
         - Created real-time dashboards for monitoring scraping activities and data pipeline efficiency.
-        - Collaborated with stakeholders to define requirements and deliver data-driven solutions within tight deadlines.
       pt-BR:
         - Implementei uma arquitetura distribuída de crawling, permitindo raspar milhões de páginas por semana e aumentando o desempenho.
         - Criei dashboards em tempo real para monitorar atividades de raspagem e a eficiência dos pipelines de dados.
-        - Colaborei com stakeholders para definir requisitos e entregar soluções orientadas por dados em prazos apertados.
   - name: Raccoon Marketing Digital
     url: https://www.monks.com/
     logo: assets/monks-logo.svg
@@ -142,14 +138,14 @@ work:
     startDate: 2019-04-01
     endDate: 2020-08-01
     summary:
-      en: Developed data extraction tools for APIs, databases, and web sources, supporting business intelligence and analytics pipelines.
-      pt-BR: Desenvolvi ferramentas de extração de dados para APIs, bancos de dados e fontes web, apoiando pipelines de business intelligence e analytics.
+      en: Built tools to extract data from APIs, databases, and websites for analytics pipelines.
+      pt-BR: Desenvolvi ferramentas para extrair dados de APIs, bancos de dados e sites para pipelines de análise.
     highlights:
       en:
-        - Designed and automated dashboards, spreadsheets, and reports, integrating data from Google BigQuery and Google Sheets for real-time marketing insights.
+        - Automated dashboards, spreadsheets, and reports with BigQuery and Google Sheets for marketing analysis.
         - Built data governance tools, reducing maintenance costs and improving data quality across pipelines.
       pt-BR:
-        - Projetei e automatizei dashboards, planilhas e relatórios, integrando dados do Google BigQuery e Google Sheets para gerar insights de marketing em tempo real.
+        - Automatizei dashboards, planilhas e relatórios com BigQuery e Google Sheets para análise de marketing.
         - Construí ferramentas de governança de dados, reduzindo custos de manutenção e melhorando a qualidade dos dados nos pipelines.
 
 education:
@@ -195,11 +191,6 @@ education:
       en: Bachelor in Computer Science
       pt-BR: Bacharelado em Ciência da Computação
     endDate: 2021-12-01
-    courses:
-      en:
-        - Received a Bachelor's Degree from the Instituto de Ciências Matemáticas e de Computação, at the University of São Paulo (ICMC - USP), one of the most important Brazilian institutions in the fields of STEM.
-      pt-BR:
-        - Graduação pelo Instituto de Ciências Matemáticas e de Computação da Universidade de São Paulo (ICMC - USP), uma das instituições brasileiras mais importantes nas áreas de STEM.
 
 skills:
   - name:
